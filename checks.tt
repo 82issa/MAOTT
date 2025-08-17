@@ -67,8 +67,8 @@
   }
 }
 
-#ALIAS {protect.add} {#ACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}} {@autoAssistFightCheck{}}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1}
-#ALIAS {protect.squishy} {#ACTION {{stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres} %1} {autoRescueCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1}
+#ALIAS {protect.add} {#ACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}} { @autoAssistFightCheck{}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.squishy} {#ACTION {{stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres} %1} { @rescueTarget{%1};#SHOWME <fac>added %1 }
 #ALIAS {protect.remove} {#UNACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{
@@ -95,6 +95,7 @@
 #FUNCTION {auto}      { #VARIABLE character[auto][%1] %2 }
 #FUNCTION {ready}     { #VARIABLE character[ready][%1] %2 }
 #FUNCTION {cooldown}  { #VARIABLE character[cooldown][%1] %2 }
+#FUNCTION {target}    { #VARIABLE character[target][%1] %2 }
 #ALIAS {dsm}   {#SHOWME <fac>%0}
 
 #00000000000
@@ -162,10 +163,10 @@
 @cooldown{gore;0}
 @cooldown{main;0}
 
-#ACTION {A spray of blood is your reward for goring}  { #VARIABLE {character[ready][gore]} {0} }
-#ACTION {Your over-ambitious gore misses}             { #VARIABLE {character[ready][gore]} {0} }
-#ACTION {Your gore connects with}                     { #VARIABLE {character[ready][gore]} {0} }
-#ACTION {^Gore! GOre! GORE!}                          { #VARIABLE {character[ready][gore]} {1} }
+#ACTION {A spray of blood is your reward for goring}  { @ready{gore;0} }
+#ACTION {Your over-ambitious gore misses}             { @ready{gore;0} }
+#ACTION {Your gore connects with}                     { @ready{gore;0} }
+#ACTION {^Gore! GOre! GORE!}                          { @ready{gore;1} }
 
 #FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; @doStuff{gore;1;6;6} }}
 
@@ -200,47 +201,55 @@
 #00000000
 #0 mend 0
 #00000000
-#VARIABLE {character[auto][mend]}  {1}
-#VARIABLE {character[ready][mend]} {0}
-#VARIABLE {character[mendTarget]}  {bread}
-#ALIAS {autoMendCheck} {#IF {$character[auto][mend] == 1 && $character[ready][mend] == 1 && $character[cooldown][main] == 0} {mendGo}}
-#ALIAS {mendGo} {
-    mend $character[mendTarget];
-    #VARIABLE {character[ready][mend]} {0};
-    #VARIABLE {character[cooldown][main]} {4}
-}
-#ACTION {You are ready to mend} {#VARIABLE {character[ready][mend]} {1}}
+@auto{mend;1}
+@ready{mend;0}
+@cooldown{mend;0}
+@cooldown{main;0}
+
+@target{mend;bread}
+
+#FUNCTION {autoMendCheck} { #IF { @checks{mend;0} } {mend $character[target][mend]; @doStuff{mend;0;4;4}} }
+
+#ACTION {You are ready to mend} { @ready{mend;1} }
 
 #00000000000
 #0 sharpen 0
 #00000000000
-#VARIABLE {character[auto][sharpen]}    {1}
-#VARIABLE {character[ready][sharpen]}   {0}
-#VARIABLE {character[sharpenTarget]}       {revenger}
-#ALIAS {autoSharpenCheck} {#IF {$character[auto][sharpen] == 1 && $character[ready][sharpen] == 1 && $character[isFighting] == 0 && $character[cooldown][main] == 0} {sharpenStuff}}
-#ALIAS {sharpenStuff} {
-    sharpen $character[sharpenTarget];
-    #VARIABLE {character[ready][sharpen]} {0};
-    #VARIABLE {character[cooldown][main]} {4}
-}
-#ACTION {You are ready to sharpen}		{#VARIABLE {character[ready][sharpen]} {1}}
-#ACTION {already has a good edge to it.}{#DELAY {sharpen}{#VARIABLE {character[ready][sharpen]} {1}}{180}}
+@auto{sharpen;1}
+@ready{sharpen;0}
+@cooldown{sharpen;0}
+@cooldown{main;0}
+
+@target{sharpen;sword}
+
+#FUNCTION {autoSharpenCheck} { #IF {@checks{sharpen;0}} {sharpen $character[target][sharpen]; @doStuff{sharpen;0;4;4}} }
+
+#ACTION {You are ready to sharpen}		{ @ready{sharpen;1} }
+#ACTION {already has a good edge to it.}{ @doStuff{sharpen;1;180;0} }
 
 #0000000000
 #0 Rescue 0
 #0000000000
-#VARIABLE {character[auto][rescue]}     {1}
-#VARIABLE {character[auto][tank]}       {1}
-#VARIABLE {character[ready][rescue]}    {1}
-#VARIABLE {character[rescueTarget]}     {name}
-#ALIAS {autoRescueCheck} {#IF {$character[auto][rescue] == 1 && $character[ready][rescue] == 1 && $character[cooldown][main] == 0 && $character[needsTo][rescue] == 1} {rescueStuff $character[rescueTarget]}{#NOP}}
-#ALIAS {autoTankCheck}  {#IF {$character[isFighting] == 1 && $character[cooldown][main] == 0 && "$character[name]" != "$character[isTanking]" && $character[auto][tank] == 1 && $character[ready][rescue] == 1 } {rescueStuff $character[isTanking]}{#NOP}}
-#ALIAS {rescueStuff} {rescu %1;#VARIABLE {character[ready][rescue]} {0};#VARIABLE {character[cooldown][main]} {4}}
-#ALIAS {rt} {#VARIABLE {character[rescueTarget]} {%1}; #VARIABlE {character[needsTo][rescue]} {1}}
-#ACTION {Your feeble rescue efforts} {#VARIABLE {character[ready][rescue]} {1}; autoRescueCheck}
-#ACTION {But nobody is fighting him.} {#VARIABLE {character[ready][rescue]} {1}; #VARIABLE {character[needsTo][rescue]} {0}}
-#ACTION {What a self-sacrificing act! You're such a hero!}{#VARIABLE {character[ready][rescue]} {1}}
-#ACTION {is dead! R.I.P.}{#VARIABLE {character[ready][rescue]} {1}}
+@auto{tank;1}
+@ready{tank;1}
+@cooldown{tank;1}
+
+
+@auto{rescue;1}
+@ready{rescue;1}
+@cooldown{rescue;0}
+@cooldown{main;0}
+@target{rescue;name}
+
+#FUNCTION {autoRescueCheck} { #IF { @checks{rescue;1} && $character[needsTo][rescue] == 1 } { @rescueStuff{$character[target][rescue]} }{#NOP} }
+#FUNCTION {autoTankCheck}   { #IF { @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { @rescueStuff{$character[isTanking]} }{#NOP} }
+#FUNCTION {rescueStuff} { rescu %1; @doStuff{rescue;0;0;4} }
+#FUNCTION {rescueTarget} { @target{rescue;%1}; #VARIABlE {character[needsTo][rescue]} {1} }
+
+#ACTION {Your feeble rescue efforts}  { @ready{rescue;1}; @autoRescueCheck }
+#ACTION {But nobody is fighting {him|her}} { @ready{rescue;1}; #VARIABLE {character[needsTo][rescue]} {0} }
+#ACTION {What a self-sacrificing act! You're such a hero!}  { @ready{rescue;1} }
+#ACTION {is dead! R.I.P.}{ @ready{rescue;1} }
 
 #00000000000000
 #0 Recuperate 0

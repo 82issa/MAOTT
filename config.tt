@@ -89,6 +89,7 @@
 #ALIAS {autoAssistInit}       {ass}
 
 #ALIAS {protect.add} {#ACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}} {autoAssistFightCheck}; #VAR {character[auto][assist]} {1};#SHOWME <fac>added %1}
+#ALIAS {protect.squishy} {#ACTION {{stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres} %1} {autoRescueCheck}; #VAR {character[auto][assist]} {1};#SHOWME <fac>added %1}
 #ALIAS {protect.remove} {#UNACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}};#SHOWME <fac>removed %1 }
 
 #ACTION {You are %1 the %2 %3, a level %4 %5.} {
@@ -220,7 +221,7 @@
 #NOP Assail check stuff
 #VARIABLE {character[auto][assail]}  {1}
 #VARIABLE {character[ready][assail]} {1}
-#ALIAS {c_assail} {#IF {$character[auto][assail] == 1 && $character[ready][assail == 1 && $character[isFighting] == 1} {assail;ready assail 0}}
+#ALIAS {c_assail} {#IF {$character[auto][assail] == 1 && $character[ready][assail] == 1 && $character[isFighting] == 1} {assail;ready assail 0}}
 
 #NOP Battle check stuff
 #VARIABLE {character[auto][battle]}  {1}
