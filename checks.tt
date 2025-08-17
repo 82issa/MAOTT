@@ -117,12 +117,10 @@
 #00000000000000000000000000000000
 #0 Food and drink related stuff 0
 #00000000000000000000000000000000
-#VARIABLE {character[auto][firebreather]} {1}
 #VARIABLE {character[auto][eat]} {1}
 #VARIABLE {character[auto][drink]} {1}
 #VARIABLE {food}    {bread}
 #VARIABLE {drink}   {water}
-#ACTION {It tastes like firebreather.}  {#IF {$character[auto][firebreather] == 1}  {sip firebreather}}
 #ACTION {You are hungry}                {#IF {$character[auto][eat] == 1}           {eat $food}}
 #ACTION {You are thirsty}               {#IF {$character[auto][drink] == 1}         {drink $drink}}
 #ALIAS {sb}     {sip firebreather}
@@ -155,6 +153,9 @@
 #ALIAS {lp}     {#LOOP 1 %1 cnt {get all $cnt.corpse}}
 #ALIAS {lpc}    {#LOOP 1 %1 cnt {get all.coins $cnt.corpse}}
 
+#ALIAS {cc}	{carve corpse;drop meat}
+#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
+
 #00000000
 #0 gore 0
 #00000000
@@ -168,7 +169,7 @@
 #ACTION {Your gore connects with}                     { @ready{gore;0} }
 #ACTION {^Gore! GOre! GORE!}                          { @ready{gore;1} }
 
-#FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; @doStuff{gore;1;6;6} }}
+#FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; @doStuff{gore;0;6;6} }}
 
 #000000000
 #0 track 0
@@ -185,18 +186,28 @@
 #ACTION {You can't seem to find any tracks.}	{#IF {$character[auto][track] != 0} {trackNext}}
 #ACTION {Your victim's tracks lead %1.}		{#IF {$character[auto][track] == 1 } {autoTrackOff;#SHOWME <fac>landed track}}
 
-#0000000000000
-#0 barbarian 0
-#0000000000000
-#VARIABLE {character[auto][dance]} {1}
-#ACTION {The insanity builds but quickly subsides} 	{#IF {$character[auto][dance] == 1 }{wilddance}}
-#ACTION {The love builds but quickly subsides}		{#IF {$character[auto][dance] == 1 }{healdance}}
-#ACTION {The rage builds but quickly subsides}		{#IF {$character[auto][dance] == 1 }{wardance}}
-#ACTION {You charge at}					{ready assail 1}
-#ACTION {You barrel into}				{ready assail 1}
-#ACTION {With a crazed scream, you jump into the fray} {ready charge 1}
-#ALIAS {cc}	{carve corpse;drop meat}
-#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
+#00000000000
+#0 Dancing 0
+#00000000000
+@auto{wardance;1}
+@auto{wilddance;1}
+@auto{healdance;1}
+@ready{wardance;1}
+@ready{wilddance;1}
+@ready{healdance;1}
+@cooldown{wardance;0}
+@cooldown{wilddance;0}
+@cooldown{healdance;0}
+@cooldown{main;0}
+
+#FUNCTION {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; @doStuff{%1;1;4;4} }
+
+#ACTION {The insanity builds but quickly subsides} 	{ @autoDanceCheck{wilddance} }
+#ACTION {The love builds but quickly subsides}		  { @autoDanceCheck{healdance} }
+#ACTION {The rage builds but quickly subsides}		  { @autoDanceCheck{wardance} }
+
+#ACTION {It tastes like firebreather.}  {#IF {$character[auto][firebreather] == 1}  {sip firebreather}}
+#VARIABLE {character[auto][firebreather]} {1}
 
 #00000000
 #0 mend 0
@@ -224,6 +235,7 @@
 
 #FUNCTION {autoSharpenCheck} { #IF {@checks{sharpen;0}} {sharpen $character[target][sharpen]; @doStuff{sharpen;0;4;4}} }
 
+need fail for sharpen
 #ACTION {You are ready to sharpen}		{ @ready{sharpen;1} }
 #ACTION {already has a good edge to it.}{ @doStuff{sharpen;1;180;0} }
 
@@ -243,7 +255,7 @@
 
 #FUNCTION {autoRescueCheck} { #IF { @checks{rescue;1} && $character[needsTo][rescue] == 1 } { @rescueStuff{$character[target][rescue]} }{#NOP} }
 #FUNCTION {autoTankCheck}   { #IF { @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { @rescueStuff{$character[isTanking]} }{#NOP} }
-#FUNCTION {rescueStuff} { rescu %1; @doStuff{rescue;0;0;4} }
+#FUNCTION {rescueStuff} { rescu %1; @doStuff{rescue;0;3;3} }
 #FUNCTION {rescueTarget} { @target{rescue;%1}; #VARIABlE {character[needsTo][rescue]} {1} }
 
 #ACTION {Your feeble rescue efforts}  { @ready{rescue;1}; @autoRescueCheck }
@@ -259,7 +271,8 @@
 @cooldown{recuperate;0}
 @cooldown{main;0}
 
-#FUNCTION {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; @dostuff{recuperate;1;180;4} } }
+#FUNCTION {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; @dostuff{recuperate;0;180;4} } }
+action cant stop figiting
 
 #0000000000
 #0 Charge 0
@@ -269,7 +282,9 @@
 @cooldown{charge;0}
 @cooldown{main;0}
 
-#FUNCTION {autoChargeCheck} { #IF { @checks{charge;1} } { charge; @doStuff{charge;1;15;6}} }
+#FUNCTION {autoChargeCheck} { #IF { @checks{charge;1} } { charge; @doStuff{charge;0;15;6}} }
+#ACTION {You charge at}					{@ready{assail;1}}
+#ACTION {You barrel into}				{@ready{assail;1}}
 
 #0000000000
 #0 Assail 0
@@ -279,7 +294,9 @@
 @cooldown{assail;0}
 @cooldown{main;0}
 
-#FUNCTION {autoAssailCheck} {#IF { @checks{assail;1} } { assail; @doStuff{assail;1;15;6} }}
+#FUNCTION {autoAssailCheck} {#IF { @checks{assail;1} } { assail; @doStuff{assail;0;15;6} }}
+#ACTION {With a crazed scream, you jump into the fray} { @ready{assail;1} }
+raction failed and success assial 
 
 #0000000000
 #0 Battle 0
@@ -289,9 +306,10 @@
 @cooldown{battle;0}
 @cooldown{main;0}
 
-#FUNCTION {autoBattleCheck} { #IF {@checks{battle;1} } { battle; @doStuff{battle;1;30;6} }}
+#FUNCTION {autoBattleCheck} { #IF {@checks{battle;1} } { battle; @doStuff{battle;0;180;6} }}
+raction failed and success battle
 
 #0000000000
 #0 Ticker 0
 #0000000000
-#TICKER {autoChecker} { autoRescueCheck; autoTankCheck; @autoBattleCheck{}; @autoGoreCheck{}; @autoChargeCheck{}; @autoAssailCheck{}; autoSharpenCheck; autoMendCheck; @cooldownGo{} }{1}
+#TICKER {autoChecker} { @autoRescueCheck{}; @autoTankCheck{}; @autoBattleCheck{}; @autoGoreCheck{}; @autoChargeCheck{}; @autoAssailCheck{}; @autoSharpenCheck{}; @autoMendCheck{}; @cooldownGo{} }{1}
