@@ -1,2 +1,15 @@
+#
+#   These lines are an examplee of what I'm having ignored 
+# they are my player base connection. Minimal initial config
+# they are ignored because host, username, and password are
+# stored in just plain text.
+
+#SESSION {name} {mud.host.org} {Port Number}
+#SPLIT
+#READ config.tt
+#CONFIG {REPEAT ENTER} {ON}
+#username without hash mark
+#password without hash mark
+
 1.tt
 2.tt

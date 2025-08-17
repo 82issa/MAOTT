@@ -272,7 +272,7 @@ need fail for sharpen
 @cooldown{main;0}
 
 #FUNCTION {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; @dostuff{recuperate;0;180;4} } }
-action cant stop figiting
+raction cant stop figiting
 
 #0000000000
 #0 Charge 0
