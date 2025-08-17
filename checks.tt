@@ -67,14 +67,14 @@
   }
 }
 
-#ALIAS {protect.add} {#ACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}} { @autoAssistFightCheck{}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.squishy} {#ACTION {{stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres} %1} { @rescueTarget{%1};#SHOWME <fac>added %1 }
-#ALIAS {protect.remove} {#UNACTION {%1 {stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres}};#SHOWME <fac>removed %1 }
+#ALIAS {protect.add}      {#ACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { @autoAssistFightCheck{}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.remove} {#UNACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
+#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} { @rescueTarget{%1};#SHOWME <fac>added %1 }
 
 #FUNCTION {checks}{
   #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
   #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
-  #IF { $character[isFighting] == %2 }     {#NOP} {#RETURN 0};
+  #IF { $character[isFighting] == %2 }    {#NOP} {#RETURN 0};
   #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
   #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
   #RETURN 1
