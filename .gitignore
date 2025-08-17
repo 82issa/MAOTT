@@ -3,6 +3,7 @@
 # they are my player base connection. Minimal initial config
 # they are ignored because host, username, and password are
 # stored in just plain text.
+#
 
 #SESSION {name} {mud.host.org} {Port Number}
 #SPLIT
