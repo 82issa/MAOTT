@@ -1,0 +1,24 @@
+#00000000000
+#0 Dancing 0
+#00000000000
+auto wardance 1
+auto wilddance 1
+auto healdance 1
+ready wardance 1
+ready wilddance 1
+ready healdance 1
+cooldown wardance 0
+cooldown wilddance 0
+cooldown healdance 0
+cooldown main 0
+
+#ALIAS {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; doStuff %1 1 4 4  }
+
+#ACTION {The insanity builds but quickly subsides} 	{  autoDanceCheck wilddance  }
+#ACTION {The love builds but quickly subsides}		  {  autoDanceCheck healdance  }
+#ACTION {The rage builds but quickly subsides}		  {  autoDanceCheck wardance  }
+
+#ACTION {It tastes like firebreather.}  {#IF {$character[auto][firebreather] == 1}  {sip firebreather}}
+#ALIAS {sb}     {sip firebreather}
+#VARIABLE {character[auto][firebreather]} {1}
+

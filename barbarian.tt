@@ -1,0 +1,23 @@
+#0 Barbarian
+
+/*00000000000*\
+00 Barbarian 00
+\*00000000000*/
+
+#READ { assail.tt }
+#READ { bandage.tt }
+#READ { battle.tt }
+#READ { carve.tt }
+#READ { charge.tt }
+#READ { dance.tt }
+#READ { gore.tt }
+#READ { mend.tt }
+#READ { recuperate.tt }
+#READ { rescue.tt }
+#READ { sharpen.tt }
+#READ { track.tt }
+
+#0000000000
+#0 Ticker 0
+#0000000000
+#TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoBattleCheck; autoGoreCheck; autoChargeCheck; autoAssailCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}

@@ -1,0 +1,11 @@
+#0000000000
+#0 Battle 0
+#0000000000
+auto battle 1
+ready battle 1
+cooldown battle 0
+cooldown main 0
+
+#ALIAS {autoBattleCheck} { #IF {@checks{battle;1} } { battle; doStuff battle 0 180 6 }}
+/*raction failed and success battle*/
+

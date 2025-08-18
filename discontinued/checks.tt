@@ -1,0 +1,315 @@
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] Mem:%22 T:%16 Exits:%17>}  { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19; processOpponent %20 %21 }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] Mem:%22 T:%16 Exits:%17>}          { processPrompt %22 1 %11 %12 %13 %14 %15 %16 %17; processTank %18 %19; processOpponent %20 %21 }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] Mem:%22 T:%16 Exits:%17>}                { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19 }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] Mem:%22 T:%16 Exits:%17>}                    { processPrompt %22 1 %11 %12 %13 %14 %15 %16 %17 }
+#ACTION {^%11H %12V %13X %14% %15C Mem:%22 T:%16 Exits:%17>}                              { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17 }
+
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] T:%16 Exits:%17>}  { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19 ; processOpponent %20 %21  }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] T:%16 Exits:%17>}          { processPrompt 0 1 %11 %12 %13 %14 %15 %16 %17; processTank %18 %19 ; processOpponent %20 %21  }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] T:%16 Exits:%17>}                { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19  }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] T:%16 Exits:%17>}                    { processPrompt 0 1 %11 %12 %13 %14 %15 %16 %17 }
+#ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17 }
+
+#ALIAS {processPrompt} {
+  #VARIABLE {character[mem]}              { %1};
+  #VARIABLE {character[isFighting]}       { %2};
+  #VARIABLE {character[HP]}               { %3};
+  #VARIABLE {character[moves]}            { %4};
+  #VARIABLE {character[tillNextLevel]}    { %5};
+  #VARIABLE {character[percentRank]}      { %6};
+  #VARIABLE {character[coins]}            { %7};
+  #VARIABLE {character[tick]}             { %8};
+  #VARIABLE {character[exits]}            { %9}
+}
+
+#ALIAS {processTank}{
+  #VARIABLE {character[isTanking]}      {%1} ;
+  #VARIABLE {character[tankCondition]}  {%2}
+}
+
+#ALIAS {processWatch}{
+  #VARIABLE {character[isWatching]}     {%1};
+  #VARIABLE {character[watchCondition]} {%2}
+}
+
+#ALIAS {processOpponent}{
+  #VARIABLE {character[target]}           {%1} ;
+  #VARIABLE {character[targetCondition]}  {%2}
+}
+
+#ACTION {You are %1 the %2 %3, a level %4 %5.} {
+    #VARIABLE {character[name]} {%1};
+    #VARIABLE {character[sex]} {%2};
+    #VARIABLE {character[race]} {%3};
+    #VARIABLE {character[level]} {%4};
+    #VARIABLE {character[class]} {%5}
+}
+
+#ACTION {You are rank %1.} {
+    #VARIABLE {character[rank]} {%1}
+}
+
+#ACTION {You are %1 years old.} {
+    #VARIABLE {character[age]} {%1}
+}
+
+#ACTION {You have %1(%2) hit and %3(%4) movement points.} {
+    #VARIABLE {character[hp]} {%1};
+    #VARIABLE {character[hp_max]} {%2};
+    #VARIABLE {character[moves]} {%3};
+    #VARIABLE {character[moves_max]} {%4}
+}
+
+#ALIAS {autoAssistFightCheck} {
+  #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{
+    assist;
+    #VARIABLE {character[isFighting]} {1}
+  }
+}
+
+#ALIAS {protect.add}      {#ACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.remove} {#UNACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
+
+#FUNCTION {checks}{
+  #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
+  #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
+  #IF { $character[isFighting] == %2 }    {#NOP} {#RETURN 0};
+  #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
+  #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
+  #RETURN 1
+  }
+
+#ALIAS {doStuff}{
+  #VARIABLE {character[ready][%1]}        {%2};
+  #VARIABLE {character[cooldown][%1]}     {%3};
+  #IF { $character[cooldown][main] < %4 } { #VARIABLE {character[cooldown][main]} {%3} } {#NOP}
+}
+
+#ALIAS {cooldownGo}{
+  #FOREACH {$character[cooldown]}{element}{
+    #IF { $character[cooldown][element] >= 1 } {#MATH {character[cooldown][element]} {$character[cooldown][element] - 1}} {#NOP}
+    }
+}
+
+#ALIAS {auto}      { #VARIABLE character[auto][%1] %2 }
+#ALIAS {ready}     { #VARIABLE character[ready][%1] %2 }
+#ALIAS {cooldown}  { #VARIABLE character[cooldown][%1] %2 }
+#ALIAS {target}    { #VARIABLE character[target][%1] %2 }
+#ALIAS {dsm}   {#SHOWME <fac>%0}
+
+#00000000000
+#0 Bandage 0
+#00000000000
+auto bandage 1
+ready bandage 1
+cooldown main 0
+cooldown bandage 0
+
+#ACTION {%1 begins resting but}     { autoBandageCheck %1  }
+#ACTION {%1 sits down and rests}    { autoBandageCheck %1  }
+#ACTION {%1 begins resting but}     { autoBandageCheck %1  }
+#ACTION {You sit down and rest}     { autoBandageCheck me; autoRecuperateCheck }
+#ACTION {You wince as you}          { autoBandageCheck me  }
+
+#ALIAS {autoBandageCheck} { #IF {@checks{bandage;0}} {bandage %1;doStuff bandage 1 4 4 } }
+
+#00000000000000000000000000000000
+#0 Food and drink related stuff 0
+#00000000000000000000000000000000
+#VARIABLE {character[auto][eat]} {1}
+#VARIABLE {character[auto][drink]} {1}
+#VARIABLE {food}    {bread}
+#VARIABLE {drink}   {water}
+#ACTION {You are hungry}                {#IF {$character[auto][eat] == 1}           {eat $food}}
+#ACTION {You are thirsty}               {#IF {$character[auto][drink] == 1}         {drink $drink}}
+#ALIAS {ef}     {eat $food}
+#ALIAS {dw}     {drink $drink}
+#ALIAS {ead}    {eat $food;drink $drink}
+#ALIAS {fa}     {drink %1;drink %1;fill all %1}
+#ALIAS {ff}     {drink fountain;drink fountain;fill all fountain}
+
+#000000000000
+#0 Footwork 0
+#000000000000
+#ACTION {probably stand up}                     {#IF {$character[isFighting] == 1}{stand}}
+#ACTION {You are sent sprawling}                {#IF {$character[isFighting] == 1}{stand}}
+#ACTION {You start using the %1.}               {#VARIABLE character[wep1] %1}
+#ACTION {You start using the %1 as a secondary} {#VARIABLE character[wep2] %1}
+#ACTION {disarms your weapon}   {get $character[wep1];wield $character[wep1];get character[$wep2]; wield $character[wep2] left}
+#ACTION {used in primary hand> %2$}    {#VARIABLE character[wep1] %2}
+#ACTION {used in secondary hand> %2$}  {#VARIABLE character[wep2] %2}
+
+#00000000000
+#0 Looting 0
+#00000000000
+#ALIAS {ga}     {get all}
+#ALIAS {gc}     {get coins}
+#ALIAS {gp}     {get pile}
+#ALIAS {gac}    {get all corpse}
+#ALIAS {gcc}    {get all.coins corpse}
+#ALIAS {gpc}    {get pile corpse}
+#ALIAS {lp}     {#LOOP 1 %1 cnt {get all $cnt.corpse}}
+#ALIAS {lpc}    {#LOOP 1 %1 cnt {get all.coins $cnt.corpse}}
+
+#ALIAS {cc}	{carve corpse;drop meat}
+#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
+
+#00000000
+#0 gore 0
+#00000000
+auto gore 1
+ready gore 1
+cooldown gore 0
+cooldown main 0
+
+#ACTION {A spray of blood is your reward for goring}  { ready gore 0 }
+#ACTION {Your over-ambitious gore misses}             { ready gore 0 }
+#ACTION {Your gore connects with}                     { ready gore 0 }
+#ACTION {^Gore! GOre! GORE!}                          { ready gore 1 }
+
+#FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; doStuff gore 0 6 6 }}
+
+#000000000
+#0 track 0
+#000000000
+#VARIABLE {character[auto][track]} {0}
+
+#ALIAS {autoTrackOff}	{#VARIABLE {character[auto][track]} {0}}
+#ALIAS {autoTrackOn} 	{#VARIABLE {character[auto][track]} {1}}
+
+#ALIAS {trainTrack} {#VARIABLE {count}{0};#VARIABLE {max}{%1};#VARIABLE {ttarget} {%2};#showme Track Train %1.%2;autoTrackOn;trackNext}
+
+#ALIAS {trackNext} {#IF {$count < $max} {#MATH {count} {$count + 1};#SHOWME $count.$ttarget;track $count.$ttarget}}
+
+#ACTION {You can't seem to find any tracks.}	{#IF {$character[auto][track] != 0} {trackNext}}
+#ACTION {Your victim's tracks lead %1.}		{#IF {$character[auto][track] == 1 } {autoTrackOff;#SHOWME <fac>landed track}}
+
+#00000000000
+#0 Dancing 0
+#00000000000
+auto wardance 1
+auto wilddance 1
+auto healdance 1
+ready wardance 1
+ready wilddance 1
+ready healdance 1
+cooldown wardance 0
+cooldown wilddance 0
+cooldown healdance 0
+cooldown main 0
+
+#ALIAS {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; doStuff %1 1 4 4  }
+
+#ACTION {The insanity builds but quickly subsides} 	{  autoDanceCheck wilddance  }
+#ACTION {The love builds but quickly subsides}		  {  autoDanceCheck healdance  }
+#ACTION {The rage builds but quickly subsides}		  {  autoDanceCheck wardance  }
+
+#ACTION {It tastes like firebreather.}  {#IF {$character[auto][firebreather] == 1}  {sip firebreather}}
+#ALIAS {sb}     {sip firebreather}
+#VARIABLE {character[auto][firebreather]} {1}
+
+#00000000
+#0 mend 0
+#00000000
+auto mend 1
+ready mend 0
+cooldown mend 0
+cooldown main 0
+
+target mend bread
+
+#ALIAS {autoMendCheck} { #IF { @checks{mend;0} } {mend $character[target][mend]; doStuff mend 0 4 4} }
+
+#ACTION {You are ready to mend} { ready mend 1 }
+
+#00000000000
+#0 sharpen 0
+#00000000000
+auto sharpen 1
+ready sharpen 0
+cooldown sharpen 0
+cooldown main 0
+
+target sharpen sword
+
+#ALIAS {autoSharpenCheck} { #IF {@checks{sharpen;0}} {sharpen $character[target][sharpen]; doStuff sharpen 0 4 4 } }
+
+need fail for sharpen
+#ACTION {You are ready to sharpen}        { ready sharpen 1 }
+#ACTION {already has a good edge to it.}  { doStuff sharpen 1 180 0}
+
+#0000000000
+#0 Rescue 0
+#0000000000
+auto tank 1
+ready tank 1
+cooldown tank 1
+
+auto rescue 1
+ready rescue 1
+cooldown rescue 0
+cooldown main 0
+target rescue name
+
+#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} { rescueTargetr %1;#SHOWME <fac>added %1 }
+
+#ALIAS {autoRescueCheck} { #IF { @checks{rescue;1} && $character[needsTo][rescue] == 1 } { rescueStuff $character[target][rescue] }{#NOP} }
+#ALIAS {autoTankCheck}   { #IF { @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { rescueStuff $character[isTanking] }{#NOP} }
+#ALIAS {rescueStuff} { rescu %1; doStuff rescue 0 3 3  }
+#ALIAS {rescueTarget} { target rescue %1; #VARIABlE {character[needsTo][rescue]} {1} }
+
+#ACTION {Your feeble rescue efforts}  { ready rescue 1 ; autoRescueCheck }
+#ACTION {But nobody is fighting {him|her}} {  ready rescue 1; #VARIABLE {character[needsTo][rescue]} {0} }
+#ACTION {What a self-sacrificing act! You're such a hero!}  { ready rescue 1 }
+#ACTION {is dead! R.I.P.}{ ready rescue 1 }
+
+#00000000000000
+#0 Recuperate 0
+#00000000000000
+auto recuperate 1
+ready recuperate 1
+cooldown recuperate 0
+cooldown main 0
+
+#ALIAS {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; dostuff recuperate 0 180 4  } }
+raction cant stop figiting
+
+#0000000000
+#0 Charge 0
+#0000000000
+auto charge 1
+ready charge 1
+cooldown charge 0
+cooldown main 0
+
+#ALIAS {autoChargeCheck} { #IF { @checks{charge;1} } { charge; doStuff charge 0 15 6} }
+#ACTION {You charge at}					{ ready assail 1}
+#ACTION {You barrel into}				{ ready assail 1}
+
+#0000000000
+#0 Assail 0
+#0000000000
+auto assail 1
+ready assail 1
+cooldown assail 0
+cooldown main 0
+
+#ALIAS {autoAssailCheck} {#IF { @checks{assail;1} } { assail; doStuff assail 0 15 6 }}
+#ACTION {With a crazed scream, you jump into the fray} { ready assail 1 }
+raction failed and success assial 
+
+#0000000000
+#0 Battle 0
+#0000000000
+auto battle 1
+ready battle 1
+cooldown battle 0
+cooldown main 0
+
+#ALIAS {autoBattleCheck} { #IF {@checks{battle;1} } { battle; doStuff battle 0 180 6 }}
+raction failed and success battle
+
+#0000000000
+#0 Ticker 0
+#0000000000
+#TICKER {autoChecker} { @autoRescueCheck{}; @autoTankCheck{}; @autoBattleCheck{}; @autoGoreCheck{}; @autoChargeCheck{}; @autoAssailCheck{}; @autoSharpenCheck{}; @autoMendCheck{}; @cooldownGo{} }{1}

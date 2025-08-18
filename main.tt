@@ -69,7 +69,6 @@
 
 #ALIAS {protect.add}      {#ACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
 #ALIAS {protect.remove} {#UNACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
-#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} { rescueTargetr %1;#SHOWME <fac>added %1 }
 
 #FUNCTION {checks}{
   #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
@@ -98,22 +97,6 @@
 #ALIAS {target}    { #VARIABLE character[target][%1] %2 }
 #ALIAS {dsm}   {#SHOWME <fac>%0}
 
-#00000000000
-#0 Bandage 0
-#00000000000
-auto bandage 1
-ready bandage 1
-cooldown main 0
-cooldown bandage 0
-
-#ACTION {%1 begins resting but}     { autoBandageCheck %1  }
-#ACTION {%1 sits down and rests}    { autoBandageCheck %1  }
-#ACTION {%1 begins resting but}     { autoBandageCheck %1  }
-#ACTION {You sit down and rest}     { autoBandageCheck me; autoRecuperateCheck }
-#ACTION {You wince as you}          { autoBandageCheck me  }
-
-#ALIAS {autoBandageCheck} { #IF {@checks{bandage;0}} {bandage %1;doStuff bandage 1 4 4 } }
-
 #00000000000000000000000000000000
 #0 Food and drink related stuff 0
 #00000000000000000000000000000000
@@ -123,7 +106,6 @@ cooldown bandage 0
 #VARIABLE {drink}   {water}
 #ACTION {You are hungry}                {#IF {$character[auto][eat] == 1}           {eat $food}}
 #ACTION {You are thirsty}               {#IF {$character[auto][drink] == 1}         {drink $drink}}
-#ALIAS {sb}     {sip firebreather}
 #ALIAS {ef}     {eat $food}
 #ALIAS {dw}     {drink $drink}
 #ALIAS {ead}    {eat $food;drink $drink}
@@ -153,162 +135,3 @@ cooldown bandage 0
 #ALIAS {lp}     {#LOOP 1 %1 cnt {get all $cnt.corpse}}
 #ALIAS {lpc}    {#LOOP 1 %1 cnt {get all.coins $cnt.corpse}}
 
-#ALIAS {cc}	{carve corpse;drop meat}
-#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
-
-#00000000
-#0 gore 0
-#00000000
-auto gore 1
-ready gore 1
-cooldown gore 0
-cooldown main 0
-
-#ACTION {A spray of blood is your reward for goring}  { ready gore 0 }
-#ACTION {Your over-ambitious gore misses}             { ready gore 0 }
-#ACTION {Your gore connects with}                     { ready gore 0 }
-#ACTION {^Gore! GOre! GORE!}                          { ready gore 1 }
-
-#FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; doStuff gore 0 6 6 }}
-
-#000000000
-#0 track 0
-#000000000
-#VARIABLE {character[auto][track]} {0}
-
-#ALIAS {autoTrackOff}	{#VARIABLE {character[auto][track]} {0}}
-#ALIAS {autoTrackOn} 	{#VARIABLE {character[auto][track]} {1}}
-
-#ALIAS {trainTrack} {#VARIABLE {count}{0};#VARIABLE {max}{%1};#VARIABLE {ttarget} {%2};#showme Track Train %1.%2;autoTrackOn;trackNext}
-
-#ALIAS {trackNext} {#IF {$count < $max} {#MATH {count} {$count + 1};#SHOWME $count.$ttarget;track $count.$ttarget}}
-
-#ACTION {You can't seem to find any tracks.}	{#IF {$character[auto][track] != 0} {trackNext}}
-#ACTION {Your victim's tracks lead %1.}		{#IF {$character[auto][track] == 1 } {autoTrackOff;#SHOWME <fac>landed track}}
-
-#00000000000
-#0 Dancing 0
-#00000000000
-auto wardance 1
-auto wilddance 1
-auto healdance 1
-ready wardance 1
-ready wilddance 1
-ready healdance 1
-cooldown wardance 0
-cooldown wilddance 0
-cooldown healdance 0
-cooldown main 0
-
-#ALIAS {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; doStuff %1 1 4 4  }
-
-#ACTION {The insanity builds but quickly subsides} 	{  autoDanceCheck wilddance  }
-#ACTION {The love builds but quickly subsides}		  {  autoDanceCheck healdance  }
-#ACTION {The rage builds but quickly subsides}		  {  autoDanceCheck wardance  }
-
-#ACTION {It tastes like firebreather.}  {#IF {$character[auto][firebreather] == 1}  {sip firebreather}}
-#VARIABLE {character[auto][firebreather]} {1}
-
-#00000000
-#0 mend 0
-#00000000
-auto mend 1
-ready mend 0
-cooldown mend 0
-cooldown main 0
-
-target mend bread 
-
-#ALIAS {autoMendCheck} { #IF { @checks{mend;0} } {mend $character[target][mend]; doStuff mend 0 4 4} }
-
-#ACTION {You are ready to mend} { ready mend 1 }
-
-#00000000000
-#0 sharpen 0
-#00000000000
-auto sharpen 1
-ready sharpen 0
-cooldown sharpen 0
-cooldown main 0
-
-target sharpen sword
-
-#ALIAS {autoSharpenCheck} { #IF {@checks{sharpen;0}} {sharpen $character[target][sharpen]; doStuff sharpen 0 4 4 } }
-
-need fail for sharpen
-#ACTION {You are ready to sharpen}        { ready sharpen 1 }
-#ACTION {already has a good edge to it.}  { doStuff sharpen 1 180 0}
-
-#0000000000
-#0 Rescue 0
-#0000000000
-auto tank 1
-ready tank 1
-cooldown tank 1
-
-auto rescue 1
-ready rescue 1
-cooldown rescue 0
-cooldown main 0
-target rescue name
-
-#ALIAS {autoRescueCheck} { #IF { @checks{rescue;1} && $character[needsTo][rescue] == 1 } { rescueStuff $character[target][rescue] }{#NOP} }
-#ALIAS {autoTankCheck}   { #IF { @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { rescueStuff $character[isTanking] }{#NOP} }
-#ALIAS {rescueStuff} { rescu %1; doStuff rescue 0 3 3  }
-#ALIAS {rescueTarget} { target rescue %1; #VARIABlE {character[needsTo][rescue]} {1} }
-
-#ACTION {Your feeble rescue efforts}  { ready rescue 1 ; autoRescueCheck }
-#ACTION {But nobody is fighting {him|her}} {  ready rescue 1; #VARIABLE {character[needsTo][rescue]} {0} }
-#ACTION {What a self-sacrificing act! You're such a hero!}  { ready rescue 1 }
-#ACTION {is dead! R.I.P.}{ ready rescue 1 }
-
-#00000000000000
-#0 Recuperate 0
-#00000000000000
-auto recuperate 1
-ready recuperate 1
-cooldown recuperate 0
-cooldown main 0
-
-#ALIAS {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; dostuff recuperate 0 180 4  } }
-raction cant stop figiting
-
-#0000000000
-#0 Charge 0
-#0000000000
-auto charge 1
-ready charge 1
-cooldown charge 0
-cooldown main 0
-
-#ALIAS {autoChargeCheck} { #IF { @checks{charge;1} } { charge; doStuff charge 0 15 6} }
-#ACTION {You charge at}					{ ready assail 1}
-#ACTION {You barrel into}				{ ready assail 1}
-
-#0000000000
-#0 Assail 0
-#0000000000
-auto assail 1
-ready assail 1
-cooldown assail 0
-cooldown main 0
-
-#ALIAS {autoAssailCheck} {#IF { @checks{assail;1} } { assail; doStuff assail 0 15 6 }}
-#ACTION {With a crazed scream, you jump into the fray} { ready assail 1 }
-raction failed and success assial 
-
-#0000000000
-#0 Battle 0
-#0000000000
-auto battle 1
-ready battle 1
-cooldown battle 0
-cooldown main 0
-
-#ALIAS {autoBattleCheck} { #IF {@checks{battle;1} } { battle; doStuff battle 0 180 6 }}
-raction failed and success battle
-
-#0000000000
-#0 Ticker 0
-#0000000000
-#TICKER {autoChecker} { @autoRescueCheck{}; @autoTankCheck{}; @autoBattleCheck{}; @autoGoreCheck{}; @autoChargeCheck{}; @autoAssailCheck{}; @autoSharpenCheck{}; @autoMendCheck{}; @cooldownGo{} }{1}

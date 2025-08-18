@@ -1,0 +1,11 @@
+#00000000000000
+#0 Recuperate 0
+#00000000000000
+auto recuperate 1
+ready recuperate 1
+cooldown recuperate 0
+cooldown main 0
+
+#ALIAS {autoRecuperateCheck} { #IF { @checks{recuperate;0} } { recuperate; dostuff recuperate 0 180 4  } }
+/*raction cant stop figiting*/
+
