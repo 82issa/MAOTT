@@ -11,10 +11,10 @@ cooldown rescue 0
 cooldown main 0
 target rescue name
 
-#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} { rescueTargetr %1;#SHOWME <fac>added %1 }
+#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1}} { rescueTargetr %1;#SHOWME <fac>added %1 }
 
-#ALIAS {autoRescueCheck} { #IF { @checks{rescue;1} && $character[needsTo][rescue] == 1 } { rescueStuff $character[target][rescue] }{#NOP} }
-#ALIAS {autoTankCheck}   { #IF { @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { rescueStuff $character[isTanking] }{#NOP} }
+#ALIAS {autoRescueCheck} { #IF { "@checks{rescue;1}" && $character[needsTo][rescue] == 1 } { rescueStuff $character[target][rescue] }{#NOP} }
+#ALIAS {autoTankCheck}   { #IF { "@checks{tank;1}" && "$character[name]" != "$character[isTanking]" } { rescueStuff $character[isTanking] }{#NOP} }
 #ALIAS {rescueStuff} { rescu %1; doStuff rescue 0 3 3  }
 #ALIAS {rescueTarget} { target rescue %1; #VARIABlE {character[needsTo][rescue]} {1} }
 

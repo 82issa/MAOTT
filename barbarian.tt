@@ -4,18 +4,18 @@
 00 Barbarian 00
 \*00000000000*/
 
-#READ { assail.tt }
-#READ { bandage.tt }
-#READ { battle.tt }
-#READ { carve.tt }
-#READ { charge.tt }
-#READ { dance.tt }
-#READ { gore.tt }
-#READ { mend.tt }
-#READ { recuperate.tt }
-#READ { rescue.tt }
-#READ { sharpen.tt }
-#READ { track.tt }
+#READ {assail.tt}
+#READ {bandage.tt}
+#READ {battle.tt}
+#READ {carve.tt}
+#READ {charge.tt}
+#READ {dance.tt}
+#READ {gore.tt}
+#READ {mend.tt}
+#READ {recuperate.tt}
+#READ {rescue.tt}
+#READ {sharpen.tt}
+#READ {track.tt}
 
 #0000000000
 #0 Ticker 0

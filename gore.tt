@@ -11,5 +11,5 @@ cooldown main 0
 #ACTION {Your gore connects with}                     { ready gore 0 }
 #ACTION {^Gore! GOre! GORE!}                          { ready gore 1 }
 
-#FUNCTION {autoGoreCheck} {#IF { @checks{gore;1} } { gore; doStuff gore 0 6 6 }}
+#ALIAS {autoGoreCheck} {#IF { "@checks{gore;1}" } { gore; doStuff gore 0 6 6 }}
 

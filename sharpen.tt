@@ -8,7 +8,7 @@ cooldown main 0
 
 target sharpen sword
 
-#ALIAS {autoSharpenCheck} { #IF {@checks{sharpen;0}} {sharpen $character[target][sharpen]; doStuff sharpen 0 4 4 } }
+#ALIAS {autoSharpenCheck} { #IF {"@checks{sharpen;0}"} {sharpen $character[target][sharpen]; doStuff sharpen 0 4 4 } }
 
 need fail for sharpen
 #ACTION {You are ready to sharpen}        { ready sharpen 1 }

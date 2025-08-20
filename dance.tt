@@ -12,7 +12,7 @@ cooldown wilddance 0
 cooldown healdance 0
 cooldown main 0
 
-#ALIAS {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; doStuff %1 1 4 4  }
+#ALIAS {autoDanceCheck}  { #IF { @checks{%1;1} } { %1; doStuff %1 1 4 4  } }
 
 #ACTION {The insanity builds but quickly subsides} 	{  autoDanceCheck wilddance  }
 #ACTION {The love builds but quickly subsides}		  {  autoDanceCheck healdance  }
