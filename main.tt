@@ -1,4 +1,3 @@
-#DEBUG ALL
 #ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] Mem:%22 T:%16 Exits:%17>}  { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19; processOpponent %20 %21 }
 #ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] Mem:%22 T:%16 Exits:%17>}          { processPrompt %22 1 %11 %12 %13 %14 %15 %16 %17; processTank %18 %19; processOpponent %20 %21 }
 #ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] Mem:%22 T:%16 Exits:%17>}                { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19 }
@@ -82,10 +81,7 @@
 }
 
 #ALIAS {cooldownGo}{
-  #FOREACH {$character[cooldown]}{element}{
-    #IF { $character[cooldown][element] >= 1 } {#MATH {character[cooldown][element]} {$character[cooldown][element] - 1}} {#NOP}
-    }
-}
+  #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} } }
 
 #ALIAS {auto}      { #VARIABLE character[auto][%1] %2 }
 #ALIAS {ready}     { #VARIABLE character[ready][%1] %2 }
