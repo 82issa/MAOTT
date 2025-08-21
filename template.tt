@@ -1,0 +1,14 @@
+#000000000
+#0 skill 0
+#000000000
+auto skill 1
+ready skill 0
+cooldown skill 0
+cooldown main 0
+
+target skill bread
+
+#ALIAS {autoSkillCheck} { #IF {"@checks{skill;0}"} {skill $character[target][skill]; doStuff skill 0 4 4} }
+
+#ACTION {You are ready to skill} { ready skill 1 }
+
