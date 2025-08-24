@@ -83,10 +83,10 @@
 #ALIAS {cooldownGo}{
   #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} } }
 
-#ALIAS {auto}      { #VARIABLE character[auto][%1] %2 }
-#ALIAS {ready}     { #VARIABLE character[ready][%1] %2 }
-#ALIAS {cooldown}  { #VARIABLE character[cooldown][%1] %2 }
-#ALIAS {target}    { #VARIABLE character[target][%1] %2 }
+#ALIAS {auto}      { #VARIABLE {character[auto][%1]} {%2} }
+#ALIAS {ready}     { #VARIABLE {character[ready][%1]} {%2} }
+#ALIAS {cooldown}  { #VARIABLE {character[cooldown][%1]} {%2} }
+#ALIAS {target}    { #VARIABLE {character[target][%1]} {%2} }
 #ALIAS {dsm}   {#SHOWME <fac>%0}
 
 #00000000000000000000000000000000

@@ -8,7 +8,7 @@ cooldown main 0
 
 target mend bread
 
-#ALIAS {autoMendCheck} { #IF {"@checks{mend;0}"} {mend $character[target][mend]; doStuff mend 0 4 4} }
+#ALIAS {autoMendCheck} {#IF {@checks{mend;0}} {mend $character[target][mend]; doStuff mend 0 4 4} }
 
 #ACTION {You are ready to mend} { ready mend 1 }
 

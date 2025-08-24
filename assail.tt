@@ -6,7 +6,7 @@ ready assail 1
 cooldown assail 0
 cooldown main 0
 
-#ALIAS {autoAssailCheck} {#IF {"@checks{assail;1}"} { assail; doStuff assail 0 15 6 }}
+#ALIAS {autoAssailCheck} {#IF {@checks{assail;1}} { assail; doStuff assail 0 15 6 }}
 #ACTION {With a crazed scream, you jump into the fray} { ready assail 1 }
 /*raction failed and success assial*/ 
 
