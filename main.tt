@@ -62,7 +62,7 @@
 
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} } }
 
-#ALIAS {protect.add}      {#ACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}}} { autoAssistFightCheck; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.add}    {#ACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
 #ALIAS {protect.remove} {#UNACTION {%1 {smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{

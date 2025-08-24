@@ -134,6 +134,8 @@
     #VARIABLE {character[cooldown][gore]} {6}
 }
 
+#ACTION {Koko tells your group '%1'} {#delay {.5}{gore %1}}
+
 #000000000
 #0 track 0
 #000000000
