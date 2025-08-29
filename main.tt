@@ -72,7 +72,7 @@
   #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
   #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
   #RETURN 1
-  }
+}
 
 #ALIAS {doStuff}{
   #VARIABLE {character[ready][%1]}        {%2};
@@ -81,7 +81,8 @@
 }
 
 #ALIAS {cooldownGo}{
-  #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} } }
+  #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} } 
+}
 
 #ALIAS {auto}      { #VARIABLE {character[auto][%1]} {%2} }
 #ALIAS {ready}     { #VARIABLE {character[ready][%1]} {%2} }
@@ -103,6 +104,16 @@
 #ALIAS {ead}    {eat $food;drink $drink}
 #ALIAS {fa}     {drink %1;drink %1;fill all %1}
 #ALIAS {ff}     {drink fountain;drink fountain;fill all fountain}
+
+#000000000000000
+#0 Fill-Follow 0
+#000000000000000
+auto fill-follow 1
+ready fill-follow 1
+cooldown fill-follow 0
+cooldown main 4
+
+#ACTION {fills a %1 from} {#IF {@checks{fill-follow;0}} { ff; doStuff fill-follow 0 8 4 }}
 
 #000000000000
 #0 Footwork 0
