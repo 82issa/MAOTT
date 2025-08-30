@@ -61,6 +61,12 @@
 }
 
 #FUNCTION {percentHP} {#MATH {result} {$character[hp_max] * .%1} }
+#FUNCTION {hpCheck}{
+    #MATH {threshold} {$character[hp_max] * .%2};
+    #IF {"%1" == "<"} {#IF {$character[hp] < $threshold} {#VARIABLE {result} 1} {#VARIABLE {result} 0}} {#NOP}
+    #IF {"%1" == ">"} {#IF {$character[hp] > $threshold} {#VARIABLE {result} 1} {#VARIABLE {result} 0}} {#NOP}
+    #UNVARIABLE {threshold}
+}
 
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} } }
 
