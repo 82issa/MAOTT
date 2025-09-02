@@ -22,4 +22,4 @@
 #0000000000
 #TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoBattleCheck; autoGoreCheck; autoChargeCheck; autoAssailCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
 
-#ACTION {Koko tells your group '%1'} {#IF {@checks{gore;0}} {#delay {.5}{gore %1}} {#delay {.5} {charge %1}}}
+#READ {matt.tt}
