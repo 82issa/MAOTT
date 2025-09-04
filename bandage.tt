@@ -8,7 +8,6 @@ cooldown bandage 0
 
 #ACTION {%1 begins resting but}     { autoBandageCheck %1  }
 #ACTION {%1 sits down and rests}    { autoBandageCheck %1  }
-#ACTION {%1 begins resting but}     { autoBandageCheck %1  }
 #ACTION {You sit down and rest}     { autoBandageCheck me; autoRecuperateCheck }
 #ACTION {You wince as you}          { autoBandageCheck me  }
 
