@@ -22,3 +22,4 @@ cooldown main 0
 #ALIAS {sb}     {sip firebreather}
 #VARIABLE {character[auto][firebreather]} {1}
 
+#TICKER {firebreather} {sip firebreather} {65}

@@ -6,7 +6,7 @@ ready mend 0
 cooldown mend 0
 cooldown main 0
 
-target mend bread
+targetType mend bread
 
 #ALIAS {autoMendCheck} {#IF {@checks{mend;0}} {mend $character[target][mend]; doStuff mend 0 4 4} }
 

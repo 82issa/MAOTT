@@ -20,6 +20,7 @@
 #0000000000
 #0 Ticker 0
 #0000000000
-#TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoBattleCheck; autoGoreCheck; autoChargeCheck; autoAssailCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
+#TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoAssailCheck;  autoGoreCheck; autoChargeCheck; autoBattleCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
+#0 #TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoGoreCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
 
 #READ {matt.tt}

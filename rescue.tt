@@ -9,7 +9,7 @@ auto rescue 1
 ready rescue 1
 cooldown rescue 0
 cooldown main 0
-target rescue name
+targetType rescue name
 
 #ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} {rescueTarget %1};#SHOWME <fac>added %1}
 
