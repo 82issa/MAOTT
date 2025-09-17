@@ -16,7 +16,7 @@ targetType rescue name
 #ALIAS {autoRescueCheck} {#IF {@hpCheck{>;33} && @checks{rescue;1} && $character[needsTo][rescue] == 1 } { rescueStuff $character[target][rescue] }{#NOP} }
 #ALIAS {autoTankCheck}   {#IF {@hpCheck{>;33} && @checks{rescue;1} && @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { rescueStuff $character[isTanking] }{#NOP} }
 #ALIAS {rescueStuff} {rescu %1; doStuff rescue 0 3 3  }
-#ALIAS {rescueTarget} {target rescue %1; #VARIABlE {character[needsTo][rescue]} {1} }
+#ALIAS {rescueTarget} {targetType rescue %1; #VARIABlE {character[needsTo][rescue]} {1} }
 
 #ACTION {Your feeble rescue efforts}  { ready rescue 1 ; autoRescueCheck }
 #ACTION {But nobody is fighting {him|her}} {  ready rescue 1; #VARIABLE {character[needsTo][rescue]} {0} }
