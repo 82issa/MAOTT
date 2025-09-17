@@ -8,5 +8,6 @@ cooldown main 0
 
 #ALIAS {autoAssailCheck} {#IF {@checks{assail;1}} { assail; doStuff assail 0 16 4 }}
 #ACTION {With a crazed scream, you jump into the fray} { ready assail 1 }
-/*raction failed and success assial*/ 
+
+/*actual cooldown time for assail is 12 seconds*/ 
 
