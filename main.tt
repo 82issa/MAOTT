@@ -148,3 +148,17 @@ cooldown main 4
 #ALIAS {lp}     {#LOOP 1 %1 cnt {get all $cnt.corpse}}
 #ALIAS {lpc}    {#LOOP 1 %1 cnt {get all.coins $cnt.corpse}}
 
+#0000000000000000000000000
+#0 tick timer on inputline
+#0000000000000000000000000
+#VARIABLE {character[tick]} {5}
+#SPLIT 0 1 0 0 2
+#ALIAS {ir} {#SCREEN {inputregion} -2 5 -1 -1 }
+#SCREEN {inputregion} { -2 5 -1 -1 }
+#TICKER {tshow} {
+  #DRAW yellow jeweled ralign box -3 1 -1 4 {$character[tick]};
+  #MATH {character[tick]} {$character[tick] - 1};
+  #IF {$character[tick] == 0}{
+    #VARIABLE {character[tick]} {60}
+  }
+} {1}
