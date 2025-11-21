@@ -23,4 +23,3 @@
 #TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoBattleCheck; autoAssailCheck;  autoGoreCheck; autoChargeCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
 #0 #TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoGoreCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
 
-#READ {matt.tt}

@@ -1,2 +1,10 @@
 #ALIAS {cali} {cast 'cause light' %1}
 #ALIAS {bless}{cast 'bless' %1}
+#ALIAS {culi} {cast 'cure light' %1}
+#ALIAS {case} {cast 'cause serious' %1}
+#ALIAS {cuse} {cast 'cure serious' %1}
+#ALIAS {cucr} {cast 'cure critical' %1}
+#ALIAS {chold}{cast 'hold person' %1}
+
+#ACTION {Hymir panics and runs around the room in a circle, obviously raving mad.} {cast 'cure critical' Hymir}
+#ACTION {comes to your rescue! You're thankful, but a bit dazed.} {watch}
