@@ -1,0 +1,23 @@
+#NOP    Color stuff for mapping
+
+#ALIAS {color_reset}
+    {
+        #SHOWME \e]R Colors reset to default.
+    }
+
+#ALIAS {color_palette}
+    {
+        #FOREACH {a;b;c;d;e;f} {cnt1}
+            {
+                #FOREACH {a;b;c;d;e;f} {cnt2}
+                    {
+                        #VARIABLE result <000>;
+                        #FOREACH {a;b;c;d;e;f} {cnt3}
+                            {
+                                #VARIABLE result $result <$cnt1$cnt2$cnt3> <<888>$cnt1$cnt2$cnt3><888>
+                            };
+                        #SHOWME $result
+                    }
+            }
+    }
+

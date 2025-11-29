@@ -1,0 +1,19 @@
+#NOP Map set tools
+
+#ALIAS {rname}  {#MAP SET roomname %0;      #SHOWME #MAP SET roomname %0}
+#ALIAS {rcolor} {#MAP SET roomcolor {<%1>}; #SHOWME #MAP SET roomcolor {<%1>}}
+#ALIAS {rnote}  {#MAP SET roomnote {%0};    #SHOWME #MAP SET roomnote {%0}}
+#ALIAS {mrfh}   {#MAP roomflag hide;        #SHOWME #MAP roomflag hide.}
+#ALIAS {rarea}  {#VARIABLE actroomarea %0}
+
+#ALIAS {map_save} { #SHOWME "Map saved." ;#MAP write {$workingdirectory/map/arctic.map}}
+#ALIAS {map_load} { #SHOWME "Map loaded.";#MAP read  {$workingdirectory/map/arctic.map}}
+
+#NOP From MapView.tt event to update terminal map.
+
+#EVENT {MAP ENTER ROOM}
+    {
+        #READ {$workingdirectory/map/map_size.tt};
+        #MAP MAP {$MAP_ROWS} {$MAP_COLS} {overwrite} {$workingdirectory/map/map.txt}
+    }
+    

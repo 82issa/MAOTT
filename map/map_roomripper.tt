@@ -1,0 +1,61 @@
+#NOP Room Name Trigger;
+
+#VARIABLE {actroomarea} {fixme}
+
+#ALIAS {mapsync_check}
+    {
+        #MAP get roomname temp1;
+        #MAP get roomarea temp2;
+        #MAP get roomdesc temp3;
+        #IF { "$actroomname" != "$temp1" || 
+              "$actroomarea" != "$temp2" || 
+              "$actroomdesc" != "$temp3" || 
+              "$actroomarea" == "fixme"
+            } 
+            {
+                #SHOWME <ead> Alert!!! Map data not matching;
+                #IF {$mapsync == 1 } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
+            };
+            #ELSE { #NOP #SHOWME <afa> Map data matches}
+    };
+
+#ALIAS {mapsync_commit}
+    {
+        #MAP SET roomname $actroomname;
+        #MAP SET roomarea $actroomarea;
+        #MAP SET roomdesc $actroomdesc
+    }
+
+#ALIAS {mapsync_variable}
+    {
+        #VARIABLE actroomarea;
+        #VARIABLE actroomname;
+        #VARIABLE actroomdesc
+    }
+
+#NOP Room name trigger ;
+#ACTION {~\e[36m%1\e[0;37m}
+{
+    #VARIABLE {actroomname} %1;
+    #VARIABLE {actroomdesc} {};
+    #VARIABLE {descripper} {1};	
+    #ACTION {%%0}
+	{
+		#IF {"$actroomdesc" == ""}
+		{
+			#VARIABLE {actroomdesc} {%%0}
+		};
+		#ELSE
+		{
+			#VARIABLE {actroomdesc} {$actroomdesc %%0}
+		}
+	}{3};
+}{5}
+
+#ACTION {~\e[33m}
+    {
+   	    #IF {$descripper == 1} {#UNACTION {%%0}};
+        #VARIABLE {descripper} {0};
+        mapsync_check
+    }{2};
+	

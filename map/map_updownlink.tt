@@ -1,0 +1,101 @@
+#nop updownlink {distance} {room direction} {initial exit}
+
+#ALIAS {udl}{updownlink}
+#ALIAS {udl2}{updownlink2}
+
+#alias updownlink
+{
+        #map get roomvnum updstartroom;
+        #path load {%3;%2};
+        #path save backward updtmpdir;
+        #list updtmpdir create {%2;%3} $updtmpdir;
+        #loop 1 2 updcntdir 
+        {
+                #math {updposdir} {$updcntdir*2};
+                #map dig $updtmpdir[$updposdir];
+                #map move $updtmpdir[$updposdir];
+                #math {updposdir} {$updcntdir*2-1};
+                #loop 1 %1 updcnt 
+                {
+                        #map roomflag void;
+                        #map dig $updtmpdir[$updposdir];
+                        #map move $updtmpdir[$updposdir];
+                };
+                #map roomflag void;
+                #math {updposdir} {4/$updcntdir};
+                #if {$updcntdir==1}
+                {
+                        #map dig $updtmpdir[$updposdir];
+                }
+                {
+                        #map link $updtmpdir[$updposdir] $updstartroom both;
+                };
+                #map move $updtmpdir[$updposdir];
+                #math {updposdir} {$updcntdir*2};
+                #map unlink $updtmpdir[$updposdir];
+        };
+        #unvar updstartroom;
+        #unvar updtmpdir;
+        #unvar updcntdir;
+        #unvar updcnt;
+        #unvar updposdir;
+}
+
+#alias updownlink2
+{
+        #map get roomvnum updstartroom;
+        #path load {%3;%2};
+        #path save backward updtmpdir;
+        #list updtmpdir create {%2;%3} $updtmpdir;
+        #loop 1 2 updcntdir
+        {
+                #math {updposdir} {$updcntdir*2};
+                #map get roomvnum {updlastroom};
+                #map dig {upddig} {NEW};
+                #map move upddig;
+                #map get roomvnum {upddig};
+                #map goto $updlastroom;
+                #map link $updtmpdir[$updposdir] $upddig both;
+                #map unlink {upddig};
+                #map move $updtmpdir[$updposdir];
+                #math {updposdir} {$updcntdir*2-1};
+                #loop 1 %1 updcnt
+                {
+                        #map roomflag void;
+                        #map get roomvnum {updlastroom};
+                        #map dig {upddig} {NEW};
+                        #map move upddig;
+                        #map get roomvnum {upddig};
+                        #map goto $updlastroom;
+                        #map link $updtmpdir[$updposdir] $upddig both;
+                        #map unlink {upddig};
+                        #map move $updtmpdir[$updposdir];
+                };
+                #map roomflag void;
+                #math {updposdir} {4/$updcntdir};
+                #if {$updcntdir==1}
+                {
+                        #map get roomvnum {updlastroom};
+                        #map dig {upddig} {NEW};
+                        #map move upddig;
+                        #map get roomvnum {upddig};
+                        #map goto $updlastroom;
+                        #map link $updtmpdir[$updposdir] $upddig;
+                        #map unlink {upddig};
+
+                }
+                {
+                        #map link $updtmpdir[$updposdir] $updstartroom;
+                };
+                #map move $updtmpdir[$updposdir];
+                #math {updposdir} {$updcntdir*2};
+                #nop #map unlink $updtmpdir[$updposdir];
+        };
+        #unvar updstartroom;
+        #unvar updtmpdir;
+        #unvar updcntdir;
+        #unvar updcnt;
+        #unvar updposdir;
+        #unvar upddig;
+        #unvar updlastroom;
+}

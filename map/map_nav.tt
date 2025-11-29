@@ -1,0 +1,61 @@
+#NOP Map Navigation stuff
+
+#ALIAS {mapfollow} 
+    {
+        #ACTION {You follow %1 north} {#MAP move n};
+        #ACTION {You follow %1 south} {#MAP move s};
+        #ACTION {You follow %1 east}  {#MAP move e};
+        #ACTION {You follow %1 west}  {#MAP move w};
+        #ACTION {You follow %1 up}    {#MAP move u};
+        #ACTION {You follow %1 down}  {#MAP move d}
+    }
+#ALIAS {mapunfollow} 
+    {
+        #UNACTION {You follow %1 north} {};
+        #UNACTION {You follow %1 south} {};
+        #UNACTION {You follow %1 east}  {};
+        #UNACTION {You follow %1 west}  {};
+        #UNACTION {You follow %1 up}    {};
+        #UNACTION {You follow %1 down}  {}
+    }
+
+#ALIAS {mmn}{#MAP move n}
+#ALIAS {mms}{#MAP move s}
+#ALIAS {mme}{#MAP move e}
+#ALIAS {mmw}{#MAP move w}
+#ALIAS {mmu}{#MAP move u}
+#ALIAS {mmd}{#MAP move d}
+
+#VARIABLE {mapstatic} {1}
+
+#ALIAS {map_static_off} {#MAP flag static off;#SHOWME #MAP flag static off;#VARIABLE {mapstatic}{0}}
+#ALIAS {map_static_on}  {#MAP flag static on ;#SHOWME #MAP flag static on ;#VARIABLE {mapstatic}{1}}
+
+#ACTION {Alas, you cannot go that way...}
+    {
+        #IF { $mapstatic == 0 } {#MAP undo}
+	}
+
+#NOP Gags for gagging directional input and the undo for it.
+
+#ALIAS {gdi} 
+    {
+        #ALIAS {n} {#nop};
+        #ALIAS {e} {#nop};
+        #ALIAS {s} {#nop};
+        #ALIAS {w} {#nop};
+        #ALIAS {u} {#nop};
+        #ALIAS {d} {#nop}
+    }
+
+#ALIAS {udi} 
+    {
+        #UNALIAS {n};
+        #UNALIAS {e};
+        #UNALIAS {s};
+        #UNALIAS {w};
+        #UNALIAS {u};
+        #UNALIAS {d}
+    }
+
+
