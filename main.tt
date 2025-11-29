@@ -162,3 +162,14 @@ cooldown main 4
     #VARIABLE {character[tick]} {60}
   }
 } {1}
+
+#00000000000000000
+#0 Mapping Tools
+#00000000000000000
+#ALIAS {mt} {
+        #READ {$workingdirectory/map/map_color.tt};
+        #READ {$workingdirectory/map/map_nav.tt};
+        #READ {$workingdirectory/map/map_roomripper.tt};
+        #READ {$workingdirectory/map/map_sets.tt};
+        #READ {$workingdirectory/map/map_updownlink.tt}
+}
