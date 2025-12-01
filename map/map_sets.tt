@@ -6,6 +6,9 @@
 #ALIAS {mrfh}   {#MAP roomflag hide;        #SHOWME #MAP roomflag hide.}
 #ALIAS {rarea}  {#VARIABLE actroomarea %0}
 
+#ALIAS {setsign} {#map set roomsymbol ⛯}
+
+
 #ALIAS {map_save} { #SHOWME "Map saved." ;#MAP write {$workingdirectory/map/arctic.map}}
 #ALIAS {map_load} { #SHOWME "Map loaded.";#MAP read  {$workingdirectory/map/arctic.map}}
 

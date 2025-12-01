@@ -1,0 +1,7 @@
+#0 Warrior
+
+#READ {bash.tt}
+#READ {rescue.tt}
+#READ {bandage.tt}
+
+#TICKER {autocheck} {autoBashCheck; cooldownGo} {1}

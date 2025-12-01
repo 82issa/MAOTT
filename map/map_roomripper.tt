@@ -1,6 +1,7 @@
 #NOP Room Name Trigger;
 
-#VARIABLE {actroomarea} {fixme}
+#VARIABLE {actroomarea} {Not Set}
+#ACTION {It is pitch black.}{#VARIABLE {actroomname}{It is pitch black.}}
 
 #ALIAS {mapsync_check}
     {
@@ -8,9 +9,7 @@
         #MAP get roomarea temp2;
         #MAP get roomdesc temp3;
         #IF { "$actroomname" != "$temp1" || 
-              "$actroomarea" != "$temp2" || 
-              "$actroomdesc" != "$temp3" || 
-              "$actroomarea" == "fixme"
+              "$actroomdesc" != "$temp3"  
             } 
             {
                 #SHOWME <ead> Alert!!! Map data not matching;
@@ -56,6 +55,6 @@
     {
    	    #IF {$descripper == 1} {#UNACTION {%%0}};
         #VARIABLE {descripper} {0};
-        mapsync_check
+        #IF {"$actroomname" != "It is pitch black."} {mapsync_check}
     }{2};
 	

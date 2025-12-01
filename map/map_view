@@ -2,7 +2,7 @@
 
 MAP_FILE='map.txt'
 MAP_SIZE='map_size.tt'
-REFRESH_RATE=.25
+REFRESH_RATE=.40
 
 while [ "true" ]; do
 	echo \#VARIABLE MAP_ROWS $(tput lines)\; > $MAP_SIZE

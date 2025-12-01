@@ -1,5 +1,4 @@
-#
-#   These lines are an examplee of what I'm having ignored 
+# These lines are an examplee of what I'm having ignored 
 # they are my player base connection. Minimal initial config
 # they are ignored because host, username, and password are
 # stored in just plain text.
@@ -19,4 +18,6 @@
 area.area
 long.area
 matt.tt
+map/arctic.map
+map/map.txt
 

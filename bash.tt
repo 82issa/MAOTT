@@ -1,0 +1,13 @@
+#00000000
+#0 Bash 0
+#00000000
+auto bash 1
+ready bash 1
+cooldown bash 0
+cooldown main 0
+
+#ALIAS {autoBashCheck} {#IF {@checks{bash;1}} { bash; doStuff bash 0 8 6 }}
+
+#ACTION {but you miss and tumble forward onto your face.} {stand; doStuff bash 1 12 6}
+#ACTION {You crash into %1 a bone crunching bash, sending {him|her} sprawling to the ground.} {doStuff bash 1 6 6}
+#ACTION {You stand up.} {ready bash 1}
