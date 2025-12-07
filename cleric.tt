@@ -1,3 +1,6 @@
+#READ {bandage.tt}
+#READ {charmy.tt}
+
 #ALIAS {cali} {cast 'cause light' %1}
 #ALIAS {bless}{cast 'bless' %1}
 #ALIAS {culi} {cast 'cure light' %1}
@@ -8,3 +11,4 @@
 
 #ACTION {Hymir panics and runs around the room in a circle, obviously raving mad.} {cast 'cure critical' Hymir}
 #ACTION {comes to your rescue! You're thankful, but a bit dazed.} {watch}
+

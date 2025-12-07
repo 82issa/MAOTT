@@ -11,10 +11,11 @@ targetType pet corpse
 targetType charmy axilus
 
 #ALIAS {sendOrder} {order $character[target][pet] assist $character[target][charmy] }
-#ACTION {The corpse of a %1 {hits|blow|misses}} {#showme BOOM;doStuff charmyAssist 0 4 0}
-
+#ACTION {The corpse of {a|the} %1 {claws|hits|blow|misses}} {#showme BOOM;doStuff charmyAssist 1 6 0}
+#ACTION {You couldn't find anyone to order around.} {ready charmyAssist 0}
+#ACTION {The corpse of {a|the} %1 starts following you.} {ready charmyAssist 1}
 #ALIAS {autoAssistFightCheck} {
   #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} };
-  #IF {@checks{charmyAssist;0}} {sendOrder;doStuff charmyAssist 0 4 4};
-  #IF {@checks{charmyAssist;1}} {sendOrder;doStuff charmyAssist 0 4 4}
+  #IF {@checks{charmyAssist;0}} {sendOrder;doStuff charmyAssist 1 5 0};
+  #IF {@checks{charmyAssist;1}} {sendOrder;doStuff charmyAssist 1 5 0}
 }
