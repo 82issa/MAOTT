@@ -1,25 +1,76 @@
-#0 Barbarian
+#NOP
+@varInit{assail}
+@varInit{bandage}
+@varInit{battle}
+@varInit{charge}
+@varInit{wardance}
+@varInit{wilddance}
+@varInit{healdance}
+@varInit{gore}
+@varInit{mend}
+@varInit{recuperate}
+@varInit{sharpen}
 
-/*00000000000*\
-00 Barbarian 00
-\*00000000000*/
+#ALIAS {autoAssail} 	  { @autoCheck{assail;1;1;16;4} }
+#ALIAS {autoBandage}	  { @autoCheck{bandage;0;1;4;0} }
+#ALIAS {autoBattle} 	  { @autoCheck{battle;1;0;60;4} }
+#ALIAS {autoCharge} 	  { @autoCheck{charge;1;0;16;4} }
+#ALIAS {autoDancer} 	  { @autoCheck{%1;1;1;4;4} }
+#ALIAS {autoGore}   	  { @autoCheck{gore;1;0;6;6} }
+#ALIAS {autoMend}	      { @autoCheck{mend;0;0;4;4} }
+#ALIAS {autoRecuperate}	{ @autoCheck{recuperate;0;1;110;4} }
+#ALIAS {autoSharpen}	  { @autoCheck{sharpen;0;0;4;4} }
 
-#READ {assail.tt}
-#READ {bandage.tt}
-#READ {battle.tt}
-#READ {carve.tt}
-#READ {charge.tt}
-#READ {dance.tt}
-#READ {gore.tt}
-#READ {mend.tt}
-#READ {recuperate.tt}
+targetType mend bread
+targetType bandage me
+targetType sharpen sword
+
+#ACTION {With a crazed scream, you jump into the fray}  { ready assail 1 } 
+#ACTION {You can battle cry again.}                     { ready battle 1 }
+#ACTION {You charge at}					{ ready charge 1 }
+#ACTION {You barrel into}				{ ready charge 1 }
+#ACTION {The insanity builds but quickly subsides} 	{ autoDancer wilddance }
+#ACTION {The love builds but quickly subsides}		{ autoDancer healdance }
+#ACTION {The rage builds but quickly subsides}		{ autoDancer wardance }
+#ACTION {A spray of blood is your reward for goring}    { ready gore 0 }
+#ACTION {Your over-ambitious gore misses}               { ready gore 0 }
+#ACTION {Your gore connects with}                       { ready gore 0 }
+#ACTION {^Gore! GOre! GORE!}                            { ready gore 1 }
+#ACTION {You are ready to mend}				{ ready mend 1 }
+#ACTION {%1 begins resting but}     { targetType bandage %1; autoBandage }
+#ACTION {%1 sits down and rests}    { targetType bangage %1; autoBandage }
+#ACTION {You sit down and rest}     { targetType bandage me; autoBandage; autoRecuperate}
+#ACTION {You wince as you}          { targetType bandage me; autoBandage }
+#ACTION {You are ready to sharpen}        {ready sharpen 1}
+#ACTION {already has a good edge to it.}  {doStuff sharpen 1 180 0}
+
+
+#ALIAS {sb}     {sip $RipRoaring}
+#VARIABLE {RipRoaring} {firebreather}
+#VARIABLE {character[auto][RipRoaring]} {1}
+#ACTION {It tastes like firebreather.}  {#IF {$character[auto][RipRoaring] == 1}  {sb}}
+#TICKER {RipRoaring} {sb} {65}
+
+
+#ALIAS {cc}	{carve corpse}
+#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
+
+/*actual cooldown time for assail is 12 seconds*/ 
+#TICKER {autoChecker} { @AIAC{} } {1}
+
+#FUNCTION {AIAC} {
+  @autoRescueCheck{};
+  @autoTankCheck{};
+  @autoCheck{battle;1;0;60;4}; 
+  @autoCheck{assail;1;1;16;4}; 
+  @autoCheck{gore;1;0;6;6}; 
+  @autoCheck{charge;1;0;16;4}; 
+  @autoCheck{mend;0;0;4;4}; 
+  @autoCheck{recuperate;0;1;110;4}; 
+  @autoCheck{sharpen;0;0;4;4}; 
+  @cooldownGo{};
+  #RETURN {#NOP}
+}
+
 #READ {rescue.tt}
-#READ {sharpen.tt}
 #READ {track.tt}
-
-#0000000000
-#0 Ticker 0
-#0000000000
-#TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoBattleCheck; autoAssailCheck;  autoGoreCheck; autoChargeCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
-#0 #TICKER {autoChecker} { autoRescueCheck; autoTankCheck; autoGoreCheck; autoSharpenCheck; autoMendCheck; cooldownGo }{1}
-

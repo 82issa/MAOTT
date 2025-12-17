@@ -1,3 +1,0 @@
-#ALIAS {cc}	{carve corpse;drop meat}
-#ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
-

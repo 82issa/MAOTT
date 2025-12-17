@@ -1,16 +1,16 @@
-#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] Mem:%22 T:%16 Exits:%17>}  { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19; processOpponent %20 %21 }
-#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] Mem:%22 T:%16 Exits:%17>}          { processPrompt %22 1 %11 %12 %13 %14 %15 %16 %17; processTank %18 %19; processOpponent %20 %21 }
-#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] Mem:%22 T:%16 Exits:%17>}                { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19 }
-#ACTION {^%11H %12V %13X %14% %15C [%18:%19] Mem:%22 T:%16 Exits:%17>}                    { processPrompt %22 1 %11 %12 %13 %14 %15 %16 %17 }
-#ACTION {^%11H %12V %13X %14% %15C Mem:%22 T:%16 Exits:%17>}                              { processPrompt %22 0 %11 %12 %13 %14 %15 %16 %17 }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] Mem:%22 T:%16 Exits:%17>}  { @processPrompt{%22;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19}; @processOpponent{%20;%21} }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] Mem:%22 T:%16 Exits:%17>}          { @processPrompt{%22;1;%11;%12;%13;%14;%15;%16;%17}; @processTank{%18;%19}; @processOpponent{%20;%21} }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] Mem:%22 T:%16 Exits:%17>}                { @processPrompt{%22;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19} }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] Mem:%22 T:%16 Exits:%17>}                    { @processPrompt{%22;1;%11;%12;%13;%14;%15;%16;%17} }
+#ACTION {^%11H %12V %13X %14% %15C Mem:%22 T:%16 Exits:%17>}                              { @processPrompt{%22;0;%11;%12;%13;%14;%15;%16;%17} }
 
-#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] T:%16 Exits:%17>}  { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19 ; processOpponent %20 %21  }
-#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] T:%16 Exits:%17>}          { processPrompt 0 1 %11 %12 %13 %14 %15 %16 %17; processTank %18 %19 ; processOpponent %20 %21  }
-#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] T:%16 Exits:%17>}                { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17; processWatch %18 %19  }
-#ACTION {^%11H %12V %13X %14% %15C [%18:%19] T:%16 Exits:%17>}                    { processPrompt 0 1 %11 %12 %13 %14 %15 %16 %17 }
-#ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { processPrompt 0 0 %11 %12 %13 %14 %15 %16 %17 }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] T:%16 Exits:%17>}  { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19} ; @processOpponent{%20;%21}  }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] T:%16 Exits:%17>}          { @processPrompt{0;1;%11;%12;%13;%14;%15;%16;%17}; @processTank{%18;%19} ; @processOpponent{%20;%21}  }
+#ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] T:%16 Exits:%17>}                { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19}  }
+#ACTION {^%11H %12V %13X %14% %15C [%18:%19] T:%16 Exits:%17>}                    { @processPrompt{0;1;%11;%12;%13;%14;%15;%16;%17} }
+#ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17} }
 
-#ALIAS {processPrompt} {
+#FUNCTION {processPrompt} {
   #VARIABLE {character[mem]}              { %1};
   #VARIABLE {character[isFighting]}       { %2};
   #VARIABLE {character[HP]}               { %3};
@@ -19,22 +19,27 @@
   #VARIABLE {character[percentRank]}      { %6};
   #VARIABLE {character[coins]}            { %7};
   #VARIABLE {character[tick]}             { %8};
-  #VARIABLE {character[exits]}            { %9}
+  #VARIABLE {character[exits]}            { %9};
+  #RETURN {#NOP}
 }
 
-#ALIAS {processTank}{
-  #VARIABLE {character[isTanking]}      {%1} ;
-  #VARIABLE {character[tankCondition]}  {%2}
+
+#FUNCTION {processTank}{
+  #VARIABLE {character[isTanking]}      {%1};
+  #VARIABLE {character[tankCondition]}  {%2};
+  #RETURN {#NOP}
 }
 
-#ALIAS {processWatch}{
+#FUNCTION {processWatch}{
   #VARIABLE {character[isWatching]}     {%1};
-  #VARIABLE {character[watchCondition]} {%2}
+  #VARIABLE {character[watchCondition]} {%2};
+  #RETURN {#NOP}
 }
 
-#ALIAS {processOpponent}{
-  #VARIABLE {character[target]}           {%1} ;
-  #VARIABLE {character[targetCondition]}  {%2}
+#FUNCTION {processOpponent}{
+  #VARIABLE {character[target]}           {%1};
+  #VARIABLE {character[targetCondition]}  {%2};
+  #RETURN {#NOP}
 }
 
 #ACTION {You are %1 the %2 %3, a level %4 %5.} {
@@ -63,9 +68,8 @@
 #FUNCTION {percentHP} {#MATH {result} {$character[hp_max] * .%1} }
 #FUNCTION {hpCheck}{
     #MATH {threshold} {$character[hp_max] * .%2};
-    #IF {"%1" == "<"} {#IF {$character[hp] < $threshold} {#VARIABLE {result} 1} {#VARIABLE {result} 0}} {#NOP};
-    #IF {"%1" == ">"} {#IF {$character[hp] > $threshold} {#VARIABLE {result} 1} {#VARIABLE {result} 0}} {#NOP};
-    #UNVARIABLE {threshold}
+    #IF {"%1" == "<"} {#IF {$character[hp] < $threshold} {#UNVARIABLE {threshold}; #RETURN {1}} {#UNVARIABLE {threshold}; #RETURN {0}}} {#NOP};
+    #IF {"%1" == ">"} {#IF {$character[hp] > $threshold} {#UNVARIABLE {threshold}; #RETURN {1}} {#UNVARIABLE {threshold}; #RETURN {0}}} {#NOP};
 }
 
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} } }
@@ -83,14 +87,45 @@
   #RETURN 1
 }
 
-#ALIAS {doStuff}{
-  #VARIABLE {character[ready][%1]}        {%2};
-  #VARIABLE {character[cooldown][%1]}     {%3};
-  #IF { $character[cooldown][main] < %4 } { #VARIABLE {character[cooldown][main]} {%4} } {#NOP}
+#FUNCTION {SMCheck}{
+  #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
+  #IF { $character[isFighting] == %2 }    {#NOP} {#RETURN 0};
+  #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
+  #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
+  #RETURN 1
 }
 
-#ALIAS {cooldownGo}{
-  #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} } 
+#FUNCTION {doStuff}{
+  #VARIABLE {character[ready][%1]}        {%2};
+  #VARIABLE {character[cooldown][%1]}     {%3};
+  #IF { $character[cooldown][main] < %4 } { #VARIABLE {character[cooldown][main]} {%4} } {#NOP};
+  #RETURN {#NOP}
+}
+
+#FUNCTION {autoCheck}{
+  #IF {@checks{%1;%2}} {%1 $character[target][%1]; @doStuff{%1;%3;%4;%5}} {#NOP};
+  #RETURN {#NOP}
+}
+
+#FUNCTION {autoSMCheck}{
+  #IF {@SMChecks{%1;%2}} {%1 $character[target][%1]; @doStuff{%1;%3;%4;%5}} {#NOP};
+  #RETURN {#NOP}
+}
+
+#FUNCTION {cooldownGo}{
+  #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} };
+  #MATH {character[tick]} {$character[tick] - 1};
+  #IF {$character[tick] == 0} { #VARIABLE {character[tick]} {60};
+  #RETURN {#NOP}
+  }
+}
+
+#FUNCTION {varInit}{
+  #VARIABLE {character[auto][%1]} {1};
+  #VARIABLE {character[ready][%1]} {1};
+  #VARIABLE {character[cooldown][%1]} {9};
+  #VARIABLE {character[cooldown][main]} {9};
+  #RETURN {#NOP}
 }
 
 #ALIAS {auto}      { #VARIABLE {character[auto][%1]} {%2} }
@@ -122,8 +157,8 @@ ready fillFollow 1
 cooldown fillFollow 0
 cooldown main 4
 
-#ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; doStuff fillFollow 1 8 4} {#nop}}
-#ACTION {You fill a %1 from} {doStuff fillFollow 1 8 4}
+#ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; @doStuff{fillFollow;1;8;4}} {#nop}}
+#ACTION {You fill a %1 from} {@doStuff{fillFollow;1;8;4}}
 
 #000000000000
 #0 Footwork 0
@@ -151,17 +186,11 @@ cooldown main 4
 #0000000000000000000000000
 #0 tick timer on inputline
 #0000000000000000000000000
-#VARIABLE {character[tick]} {5}
+#VARIABLE {character[tick]} {99}
 #SPLIT 0 1 0 0 2
 #ALIAS {ir} {#SCREEN {inputregion} -2 5 -1 -1 }
-#SCREEN {inputregion} { -2 5 -1 -1 }
-#TICKER {tshow} {
-  #DRAW yellow jeweled ralign box -3 1 -1 4 {$character[tick]};
-  #MATH {character[tick]} {$character[tick] - 1};
-  #IF {$character[tick] == 0}{
-    #VARIABLE {character[tick]} {60}
-  }
-} {1}
+#SCREEN {inputregion}  -2 5 -1 -1 
+#TICKER {tshow} { #DRAW yellow jeweled ralign box -3 1 -1 4 $character[tick];#nop;#nop } {1}
 
 #00000000000000000
 #0 Mapping Tools

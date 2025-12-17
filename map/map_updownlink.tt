@@ -6,6 +6,10 @@
 #alias updownlink
 {
         #map get roomvnum updstartroom;
+        #map jump %3;
+        #map get roomflags updflags;
+        #map goto $updstartroom;
+        #if {$updflags == 8}{#showme <118>ERROR: Using updownlink on an exit leading to a void room; #return};
         #path load {%3;%2};
         #path save backward updtmpdir;
         #list updtmpdir create {%2;%3} $updtmpdir;
