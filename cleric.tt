@@ -12,3 +12,4 @@
 #ACTION {Hymir panics and runs around the room in a circle, obviously raving mad.} {cast 'cure critical' Hymir}
 #ACTION {comes to your rescue! You're thankful, but a bit dazed.} {watch}
 
+#TICKER {cooldown} {cooldownGo} {1}
