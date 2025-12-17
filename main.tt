@@ -152,10 +152,7 @@
 #000000000000000
 #0 Fill-Follow 0
 #000000000000000
-auto fillFollow 1
-ready fillFollow 1
-cooldown fillFollow 0
-cooldown main 4
+@varInit{fillFollow}
 
 #ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; @doStuff{fillFollow;1;8;4}} {#nop}}
 #ACTION {You fill a %1 from} {@doStuff{fillFollow;1;8;4}}
