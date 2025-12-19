@@ -116,8 +116,8 @@
   #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} };
   #MATH {character[tick]} {$character[tick] - 1};
   #IF {$character[tick] == 0} { #VARIABLE {character[tick]} {60};
-  #RETURN {#NOP}
   }
+  #RETURN {#NOP}
 }
 
 #FUNCTION {varInit}{

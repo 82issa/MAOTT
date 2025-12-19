@@ -1,22 +1,17 @@
 #ALIAS {oca} {order corpse assist %1}
 #ALIAS {oc}  {order corpse %1}
-
-
-auto charmyAssist 1
-ready charmyAssist 1
-cooldown charmyAssist 0
-cooldown main 0
+@varInit{charmyAssist}
 
 targetType pet corpse
 targetType charmy axilus
 
-#ALIAS {sendOrder} {order $character[target][pet] assist $character[target][charmy] }
-#ACTION {The corpse of {a|the} %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;doStuff charmyAssist 1 6 0}
-#ACTION {The corpse of %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;doStuff charmyAssist 1 6 0}
+#FUNCTION {sendOrder} {order $character[target][pet] assist $character[target][charmy];return{#NOP} }
+#ACTION {The corpse of {a|the} %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;@doStuff{charmyAssist;1;6;0}}
+#ACTION {The corpse of %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;@doStuff{charmyAssist;1;6;0}}
 #ACTION {You couldn't find anyone to order around.} {ready charmyAssist 0}
 #ACTION {The corpse of {a|the} %1 starts following you.} {ready charmyAssist 1}
 #ALIAS {autoAssistFightCheck} {
   #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} };
-  #IF {@checks{charmyAssist;0}} {sendOrder;doStuff charmyAssist 1 5 0};
-  #IF {@checks{charmyAssist;1}} {sendOrder;doStuff charmyAssist 1 5 0}
+  #IF {@checks{charmyAssist;0}} {@sendOrder{};@doStuff{charmyAssist;1;5;0}};
+  #IF {@checks{charmyAssist;1}} {@sendOrder{};@doStuff{charmyAssist;1;5;0}}
 }
