@@ -5,6 +5,7 @@
 targetType pet corpse
 targetType charmy axilus
 
+#ALIAS {charmyAssist} {#showme CA!!!}
 #FUNCTION {sendOrder} {order $character[target][pet] assist $character[target][charmy];return{#NOP} }
 #ACTION {The corpse of {a|the} %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;@doStuff{charmyAssist;1;6;0}}
 #ACTION {The corpse of %1 {slashes|claws|hits|blow|misses}} {#showme BOOM;@doStuff{charmyAssist;1;6;0}}

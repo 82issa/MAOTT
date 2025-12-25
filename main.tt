@@ -11,15 +11,15 @@
 #ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17} }
 
 #FUNCTION {processPrompt} {
-  #VARIABLE {character[mem]}              { %1};
-  #VARIABLE {character[isFighting]}       { %2};
-  #VARIABLE {character[HP]}               { %3};
-  #VARIABLE {character[moves]}            { %4};
-  #VARIABLE {character[tillNextLevel]}    { %5};
-  #VARIABLE {character[percentRank]}      { %6};
-  #VARIABLE {character[coins]}            { %7};
-  #VARIABLE {character[tick]}             { %8};
-  #VARIABLE {character[exits]}            { %9};
+  #VARIABLE {character[mem]}              {%1};
+  #VARIABLE {character[isFighting]}       {%2};
+  #VARIABLE {character[HP]}               {%3};
+  #VARIABLE {character[moves]}            {%4};
+  #VARIABLE {character[tillNextLevel]}    {%5};
+  #VARIABLE {character[percentRank]}      {%6};
+  #VARIABLE {character[coins]}            {%7};
+  #VARIABLE {character[tick]}             {%8};
+  #VARIABLE {character[exits]}            {%9};
   #RETURN {#NOP}
 }
 

@@ -3,11 +3,20 @@
 MAP_FILE='map.txt'
 MAP_SIZE='map_size.tt'
 REFRESH_RATE=.40
+# Hide cursor
+tput civis
+
+# Always restore cursor on exit
+trap 'tput cnorm; clear; exit' EXIT INT TERM
 
 while [ "true" ]; do
 	echo \#VARIABLE MAP_ROWS $(tput lines)\; > $MAP_SIZE
 	echo \#VARIABLE MAP_COLS $(tput cols)\; >> $MAP_SIZE
-	cat $MAP_FILE
-	sleep $REFRESH_RATE
+  new_hash=$(sha1sum "$MAP_FILE" | awk '{print $1}')
+  if [[ $new_hash != "$last_hash" ]]; then
     clear
+    cat "$MAP_FILE"
+    last_hash=$new_hash
+  fi
+	sleep $REFRESH_RATE
 done
