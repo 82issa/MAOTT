@@ -1,5 +1,7 @@
 #READ {charmy.tt}
 
+@varInit{divinity}
+
 #ALIAS {cali} {cast 'cause light' %1}
 #ALIAS {bless}{cast 'bless' %1}
 #ALIAS {culi} {cast 'cure light' %1}
@@ -11,4 +13,12 @@
 #ACTION {Hymir panics and runs around the room in a circle, obviously raving mad.} {cast 'cure critical' Hymir}
 #ACTION {comes to your rescue! You're thankful, but a bit dazed.} {watch}
 
-#TICKER {cooldown} {@cooldownGo{}} {1}
+#ACTION {You feel ready to call upon the strength of the Gods.} {ready divinity 1}
+
+#TICKER {autoChecker} { @AIAC{} } {1}
+
+#FUNCTION {AIAC} {
+  @autoCheck{divinity;0;0;4;4};
+  @cooldownGo{};
+  #RETURN {#NOP}
+}

@@ -37,10 +37,7 @@ targetType sharpen sword
 #ACTION {Your gore connects with}                       { ready gore 0 }
 #ACTION {^Gore! GOre! GORE!}                            { ready gore 1 }
 #ACTION {You are ready to mend}				{ ready mend 1 }
-#ACTION {%1 begins resting but}     { targetType bandage %1; autoBandage }
-#ACTION {%1 sits down and rests}    { targetType bangage %1; autoBandage }
 #ACTION {You sit down and rest}     { targetType bandage me; autoBandage; autoRecuperate}
-#ACTION {You wince as you}          { targetType bandage me; autoBandage }
 #ACTION {You are ready to sharpen}        {ready sharpen 1}
 #ACTION {already has a good edge to it.}  {doStuff sharpen 1 180 0}
 

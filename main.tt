@@ -114,7 +114,7 @@
 
 #FUNCTION {cooldownGo}{
   #FOREACH {$character[cooldown]}{element}{ #IF { $character[cooldown][$element] >= 1 } {#MATH {character[cooldown][$element]} {$character[cooldown][$element] - 1}} {#NOP} };
-  #MATH {character[tick]} {$character[tick] - 1};
+  #DELAY {.5} {#MATH {character[tick]} {$character[tick] - 1}};
   #IF {$character[tick] == 0} { #VARIABLE {character[tick]} {60}};
   #RETURN {#NOP}
 }
@@ -156,11 +156,24 @@
 #ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; @doStuff{fillFollow;1;8;4}} {#nop}}
 #ACTION {You fill a %1 from} {@doStuff{fillFollow;1;8;4}}
 
-#000000000000
-#0 Footwork 0
-#000000000000
-#ACTION {probably stand up}                     {#IF {$character[isFighting] == 1}{stand}}
+#0000000000000000000000 
+#0 Footwork & Bandage 0
+#0 0 standing
+#0 1 resting
+#0 2 sitting
+#0 3 sleeping
+#0 4 flying
+#0 5 mounted
+#0 6 sinking
+#0000000000000000000000
+
+#ACTION {You should probably stand up}          {#IF {$character[isFighting] == 1}{stand}}
 #ACTION {You are sent sprawling}                {#IF {$character[isFighting] == 1}{stand}}
+#ACTION {%1 begins resting but}                 { targetType bandage %1; autoBandage }
+#ACTION {%1 sits down and rests}                { targetType bangage %1; autoBandage }
+#ACTION {You sit down and rest}                 { targetType bandage me; autoBandage }
+#ACTION {You wince as you}                      { targetType bandage me; autoBandage }
+
 #ACTION {You start using the %1.}               {#VARIABLE character[wep1] %1}
 #ACTION {You start using the %1 as a secondary} {#VARIABLE character[wep2] %1}
 #ACTION {disarms your weapon}   {get $character[wep1];wield $character[wep1];get character[$wep2]; wield $character[wep2] left}
