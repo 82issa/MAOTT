@@ -169,10 +169,11 @@
 
 #ACTION {You should probably stand up}          {#IF {$character[isFighting] == 1}{stand}}
 #ACTION {You are sent sprawling}                {#IF {$character[isFighting] == 1}{stand}}
-#ACTION {%1 begins resting but}                 { targetType bandage %1; autoBandage }
-#ACTION {%1 sits down and rests}                { targetType bangage %1; autoBandage }
-#ACTION {You sit down and rest}                 { targetType bandage me; autoBandage }
-#ACTION {You wince as you}                      { targetType bandage me; autoBandage }
+@varInit{bandage}
+#ACTION {%1 begins resting but}                 { targetType bandage %1; @autoCheck{bandage;0;1;4;0} }
+#ACTION {%1 sits down and rests}                { targetType bangage %1; @autoCheck{bandage;0;1;4;0} }
+#ACTION {You sit down and rest}                 { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
+#ACTION {You wince as you}                      { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
 
 #ACTION {You start using the %1.}               {#VARIABLE character[wep1] %1}
 #ACTION {You start using the %1 as a secondary} {#VARIABLE character[wep2] %1}
