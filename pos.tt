@@ -1,5 +1,5 @@
 #FUNCTION {position} {#VARIABLE {character[position][%1]} {%2};#RETURN {#NOP}}
-
+#FUNCTION {posCheck} {#IF { $character[position][%1] == %2 } {#RETURN 1} {#RETURN 0}}
 
 #ACTION {Your wounds are already bandaged.}     {ready bandage 0}
 #ACTION {You throw away your bloody bandages.}  {ready bandage 1}
