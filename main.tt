@@ -11,18 +11,17 @@
 #ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17} }
 
 #FUNCTION {processPrompt} {
-  #VARIABLE {character[mem]}              {%1};
-  #VARIABLE {character[isFighting]}       {%2};
-  #VARIABLE {character[HP]}               {%3};
-  #VARIABLE {character[moves]}            {%4};
-  #VARIABLE {character[tillNextLevel]}    {%5};
-  #VARIABLE {character[percentRank]}      {%6};
-  #VARIABLE {character[coins]}            {%7};
-  #VARIABLE {character[tick]}             {%8};
-  #VARIABLE {character[exits]}            {%9};
+  #VARIABLE {character[mem]}                {%1};
+  #VARIABLE {character[position][fighting]} {%2};
+  #VARIABLE {character[HP]}                 {%3};
+  #VARIABLE {character[moves]}              {%4};
+  #VARIABLE {character[tillNextLevel]}      {%5};
+  #VARIABLE {character[percentRank]}        {%6};
+  #VARIABLE {character[coins]}              {%7};
+  #VARIABLE {character[tick]}               {%8};
+  #VARIABLE {character[exits]}              {%9};
   #RETURN {#NOP}
 }
-
 
 #FUNCTION {processTank}{
   #VARIABLE {character[isTanking]}      {%1};
@@ -72,7 +71,7 @@
     #IF {"%1" == ">"} {#IF {$character[hp] > $threshold} {#UNVARIABLE {threshold}; #RETURN {1}} {#UNVARIABLE {threshold}; #RETURN {0}}} {#NOP};
 }
 
-#ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[isFighting] == 0}{ assist; #VARIABLE {character[isFighting]} {1} } }
+#ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[position][fighting] == 0}{ assist; #VARIABLE {character[position][fighting]} {1} } }
 
 #ALIAS {protect.madd}    {#ACTION {{%1|%2|%3} {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
 #ALIAS {protect.add}    {#ACTION {%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
@@ -81,7 +80,7 @@
 #FUNCTION {checks}{
   #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
   #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
-  #IF { $character[isFighting] == %2 }    {#NOP} {#RETURN 0};
+  #IF { $character[position][fighting] == %2 }    {#NOP} {#RETURN 0};
   #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
   #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
   #RETURN 1
@@ -89,7 +88,7 @@
 
 #FUNCTION {SMCheck}{
   #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
-  #IF { $character[isFighting] == %2 }    {#NOP} {#RETURN 0};
+  #IF { $character[position][fighting] == %2 }    {#NOP} {#RETURN 0};
   #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
   #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
   #RETURN 1
@@ -156,30 +155,54 @@
 #ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; @doStuff{fillFollow;1;8;4}} {#nop}}
 #ACTION {You fill a %1 from} {@doStuff{fillFollow;1;8;4}}
 
-#0000000000000000000000 
-#0 Footwork & Bandage 0
-#0 0 standing
-#0 1 resting
-#0 2 sitting
-#0 3 sleeping
-#0 4 flying
-#0 5 mounted
-#0 6 sinking
-#0000000000000000000000
+#000000000000000000000000000000 
+#0
+#0 Footwork, Bandage & Position 
+#0 
+#000000000000000000000000000000
 
-#ACTION {You should probably stand up}          {#IF {$character[isFighting] == 1}{stand}}
-#ACTION {You are sent sprawling}                {#IF {$character[isFighting] == 1}{stand}}
 @varInit{bandage}
 #ACTION {%1 begins resting but}                 { targetType bandage %1; @autoCheck{bandage;0;1;4;0} }
 #ACTION {%1 sits down and rests}                { targetType bangage %1; @autoCheck{bandage;0;1;4;0} }
 #ACTION {You sit down and rest}                 { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
 #ACTION {You wince as you}                      { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
+#ACTION {Your wounds are already bandaged.}     {ready bandage 0}
+#ACTION {You throw away your bloody bandages.}  {ready bandage 1}
 
-#ACTION {You start using the %1.}               {#VARIABLE character[wep1] %1}
-#ACTION {You start using the %1 as a secondary} {#VARIABLE character[wep2] %1}
-#ACTION {disarms your weapon}   {get $character[wep1];wield $character[wep1];get character[$wep2]; wield $character[wep2] left}
-#ACTION {used in primary hand> %2$}    {#VARIABLE character[wep1] %2}
-#ACTION {used in secondary hand> %2$}  {#VARIABLE character[wep2] %2}
+#FUNCTION {position} {#VARIABLE {character[position][%1]} {%2};#RETURN {#NOP}}
+#FUNCTION {posCheck} {#IF { $character[position][%1] == %2 } {#RETURN 1} {#RETURN 0}}
+
+#ACTION {You are sitting.}                        {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {You sit down.}                           {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {You are resting.}                        {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {You rest your tired bones.}              {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {You sit down and rest your tired bones.} {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {You are standing.}                       {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+#ACTION {You stand up.}                           {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+
+#ACTION {You are following}                       {@position{following;1}}
+#ACTION {You now follow %1.}                      {@position{following;1}}
+#ACTION {You stop following %1}                   {@position{following;0}; @position{grouped;0}}
+#ACTION {You are no longer a member of %1 group.} {@position{grouped;0}}
+#ACTION {You are now a member of %1 group.}       {@position{grouped;1}}
+#ACTION {You are still a group member.}           {@position{grouped;1}}
+#ACTION {Your group of %1 members}                {#IF { %1 >= 2} {@position{grouped;1}} {@position{grouped;0}}}
+
+#ACTION {You rise up off the ground.}             {@position{flying;1}}
+#ACTION {You are flying.}                         {@position{flying;1}}
+#ACTION {You feel much heavier.}                  {@position{flying;0}}
+
+#ACTION {You should probably stand up}            {#IF {$character[position][fighting] == 1}{stand}}
+#ACTION {You are sent sprawling}                  {#IF {$character[position][fighting] == 1}{stand}}
+
+#ALIAS {set.prime}                                {#VARIABLE character[weapon][prime] %1}
+#ALIAS {set.offie}                                {#VARIABLE character[weapon][offie] %1}
+#ACTION {disarms your weapon}  {
+  get $character[weapon][prime];
+  wield $character[weapon][prime];
+  get $character[weapon][offie]; 
+  wield $character[weapon][offie] left
+}
 
 #00000000000
 #0 Looting 0
