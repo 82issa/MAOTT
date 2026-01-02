@@ -1,6 +1,10 @@
 #READ {charmy.tt}
 
 @varInit{divinity}
+@varInit{meditate}
+@varInit{scribe}
+@varInit{brew}
+@varInit{turn}
 
 #ALIAS {cali} {cast 'cause light' %1}
 #ALIAS {bless}{cast 'bless' %1}
@@ -13,12 +17,27 @@
 #ACTION {Hymir panics and runs around the room in a circle, obviously raving mad.} {cast 'cure critical' Hymir}
 #ACTION {comes to your rescue! You're thankful, but a bit dazed.} {watch}
 
-#ACTION {You feel ready to call upon the strength of the Gods.} {ready divinity 1}
-
 #TICKER {autoChecker} { @AIAC{} } {1}
 
 #FUNCTION {AIAC} {
   #IF {@posCheck{standing;1}} {@autoCheck{divinity;0;0;4;4}};
+  #IF {@posCheck{resting;1}} {@autoCheck{meditate;0;0;4;4}};
   @cooldownGo{};
   #RETURN {#NOP}
 }
+
+#ALIAS {trainBrew} {#FOREACH { 
+  {cure critical} {cure serious} {cause serious} {remove curse} {cure blindness}
+  {blindness} {restore strength} {know alignment} {cure light} {bless}
+} {targetSpell} {brew '$targetSpell'}}
+
+#ALIAS {trainScribe} {#FOREACH { 
+  {cure critical} {hold person} {flamestrike} {cure serious} {cause serious}
+  {remove curse} {light} {curse} {cure blindness} {blindness} {spiritual hammer}
+  {restore strength} {know alignment} {cure light} {create water} {create food}
+  {cause light} {bless}
+} {targetSpell} {scribe '$targetSpell'}}
+
+#ACTION {You lose concentration while scribing to a blank scroll.}  {ready scribe 0;}
+#ACTION {You stop meditating and stand up.}                         {ready meditate 1}
+#ACTION {You feel ready to call upon the strength of the Gods.}     {ready divinity 1}
