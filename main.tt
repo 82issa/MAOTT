@@ -41,7 +41,7 @@
   #RETURN {#NOP}
 }
 
-#ACTION {You are %1 the %2 %3, a level %4 %5.} {
+#ACTION {^You are %1 the %2 %3, a level %4 %5.} {
     #VARIABLE {character[name]} {%1};
     #VARIABLE {character[sex]} {%2};
     #VARIABLE {character[race]} {%3};
@@ -49,15 +49,15 @@
     #VARIABLE {character[class]} {%5}
 }
 
-#ACTION {You are rank %1.} {
+#ACTION {^You are rank %1.} {
     #VARIABLE {character[rank]} {%1}
 }
 
-#ACTION {You are %1 years old.} {
+#ACTION {^You are %1 years old.} {
     #VARIABLE {character[age]} {%1}
 }
 
-#ACTION {You have %1(%2) hit and %3(%4) movement points.} {
+#ACTION {^You have %1(%2) hit and %3(%4) movement points.} {
     #VARIABLE {character[hp]} {%1};
     #VARIABLE {character[hp_max]} {%2};
     #VARIABLE {character[moves]} {%3};
@@ -73,9 +73,9 @@
 
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[position][fighting] == 0}{ assist; #VARIABLE {character[position][fighting]} {1} } }
 
-#ALIAS {protect.madd}    {#ACTION {{%1|%2|%3} {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.add}    {#ACTION {%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.remove} {#UNACTION {%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
+#ALIAS {protect.madd}    {#ACTION {{^%1|^%2|^%3} {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.add}    {#ACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.remove} {#UNACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{
   #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
@@ -162,38 +162,38 @@
 #000000000000000000000000000000
 
 @varInit{bandage}
-#ACTION {%1 begins resting but}                 { targetType bandage %1; @autoCheck{bandage;0;1;4;0} }
-#ACTION {%1 sits down and rests}                { targetType bangage %1; @autoCheck{bandage;0;1;4;0} }
-#ACTION {You sit down and rest}                 { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
-#ACTION {You wince as you}                      { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
-#ACTION {Your wounds are already bandaged.}     {ready bandage 0}
-#ACTION {You throw away your bloody bandages.}  {ready bandage 1}
+#ACTION {^%1 begins resting but}                 { targetType bandage %1; @autoCheck{bandage;0;1;4;0} }
+#ACTION {^%1 sits down and rests}                { targetType bangage %1; @autoCheck{bandage;0;1;4;0} } {9}
+#ACTION {^You throw away your bloody bandages.}  { #IF { @posCheck{resting;1} && $character[hp] != $character[hp_max]} {bandage me} }
+#ACTION {^You wince as you}                      { targetType bandage me; @autoCheck{bandage;0;1;4;0} }
+#ACTION {^Your wounds are already bandaged.}     {ready bandage 0}
+#ACTION {^You throw away your bloody bandages.}  {ready bandage 1}
 
 #FUNCTION {position} {#VARIABLE {character[position][%1]} {%2};#RETURN {#NOP}}
 #FUNCTION {posCheck} {#IF { $character[position][%1] == %2 } {#RETURN 1} {#RETURN 0}}
 
-#ACTION {You are sitting.}                        {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
-#ACTION {You sit down.}                           {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
-#ACTION {You are resting.}                        {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
-#ACTION {You rest your tired bones.}              {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
-#ACTION {You sit down and rest your tired bones.} {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
-#ACTION {You are standing.}                       {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
-#ACTION {You stand up.}                           {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+#ACTION {^You are sitting.}                        {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {^You sit down.}                           {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {^You are resting.}                        {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {^You rest your tired bones.}              {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {^You sit down and rest your tired bones.} {@position{sitting;1}; @position{resting;1}; @position{standing;0}; targetType bandage me; @autoCheck{bandage;0;1;4;0}} {3}
+#ACTION {^You are standing.}                       {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+#ACTION {^You stand up.}                           {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
 
-#ACTION {You are following}                       {@position{following;1}}
-#ACTION {You now follow %1.}                      {@position{following;1}}
-#ACTION {You stop following %1}                   {@position{following;0}; @position{grouped;0}}
-#ACTION {You are no longer a member of %1 group.} {@position{grouped;0}}
-#ACTION {You are now a member of %1 group.}       {@position{grouped;1}}
-#ACTION {You are still a group member.}           {@position{grouped;1}}
-#ACTION {Your group of %1 members}                {#IF { %1 >= 2} {@position{grouped;1}} {@position{grouped;0}}}
+#ACTION {^You are following}                       {@position{following;1}}
+#ACTION {^You now follow %1.}                      {@position{following;1}}
+#ACTION {^You stop following %1}                   {@position{following;0}; @position{grouped;0}}
+#ACTION {^You are no longer a member of %1 group.} {@position{grouped;0}}
+#ACTION {^You are now a member of %1 group.}       {@position{grouped;1}}
+#ACTION {^You are still a group member.}           {@position{grouped;1}}
+#ACTION {^Your group of %1 members}                {#IF { %1 >= 2} {@position{grouped;1}} {@position{grouped;0}}}
 
-#ACTION {You rise up off the ground.}             {@position{flying;1}}
-#ACTION {You are flying.}                         {@position{flying;1}}
-#ACTION {You feel much heavier.}                  {@position{flying;0}}
+#ACTION {^You rise up off the ground.}             {@position{flying;1}}
+#ACTION {^You are flying.}                         {@position{flying;1}}
+#ACTION {^You feel much heavier.}                  {@position{flying;0}}
 
-#ACTION {You should probably stand up}            {#IF {$character[position][fighting] == 1}{stand}}
-#ACTION {You are sent sprawling}                  {#IF {$character[position][fighting] == 1}{stand}}
+#ACTION {^You should probably stand up}            {#IF {$character[position][fighting] == 1}{stand}}
+#ACTION {^You are sent sprawling}                  {#IF {$character[position][fighting] == 1}{stand}}
 
 #ALIAS {set.prime}                                {#VARIABLE character[weapon][prime] %1}
 #ALIAS {set.offie}                                {#VARIABLE character[weapon][offie] %1}
