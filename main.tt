@@ -78,19 +78,19 @@
 #ALIAS {protect.remove} {#UNACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{
-  #IF { $character[cooldown][main] == 0 } {#NOP} {#RETURN 0};
-  #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
-  #IF { $character[position][fighting] == %2 }    {#NOP} {#RETURN 0};
-  #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
-  #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
+  #IF { $character[cooldown][main] == 0 }       {#NOP} {#RETURN 0};
+  #IF { $character[cooldown][%1] == 0 }         {#NOP} {#RETURN 0};
+  #IF { $character[position][fighting] == %2 }  {#NOP} {#RETURN 0};
+  #IF { $character[ready][%1] == 1 }            {#NOP} {#RETURN 0};
+  #IF { $character[auto][%1] == 1 }             {#NOP} {#RETURN 0};
   #RETURN 1
 }
 
 #FUNCTION {SMCheck}{
-  #IF { $character[cooldown][%1] == 0 }   {#NOP} {#RETURN 0};
-  #IF { $character[position][fighting] == %2 }    {#NOP} {#RETURN 0};
-  #IF { $character[ready][%1] == 1 }      {#NOP} {#RETURN 0};
-  #IF { $character[auto][%1] == 1 }       {#NOP} {#RETURN 0};
+  #IF { $character[cooldown][%1] == 0 }         {#NOP} {#RETURN 0};
+  #IF { $character[position][fighting] == %2 }  {#NOP} {#RETURN 0};
+  #IF { $character[ready][%1] == 1 }            {#NOP} {#RETURN 0};
+  #IF { $character[auto][%1] == 1 }             {#NOP} {#RETURN 0};
   #RETURN 1
 }
 
@@ -139,8 +139,8 @@
 #VARIABLE {character[auto][drink]} {1}
 #VARIABLE {food}    {bread}
 #VARIABLE {drink}   {water}
-#ACTION {You are hungry}                {#IF {$character[auto][eat] == 1}           {eat $food}}
-#ACTION {You are thirsty}               {#IF {$character[auto][drink] == 1}         {drink $drink}}
+#ACTION {^You are hungry}                {#IF {$character[auto][eat] == 1}           {eat $food}}
+#ACTION {^You are thirsty}               {#IF {$character[auto][drink] == 1}         {drink $drink}}
 #ALIAS {ef}     {eat $food}
 #ALIAS {dw}     {drink $drink}
 #ALIAS {ead}    {eat $food;drink $drink}
