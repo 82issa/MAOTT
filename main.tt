@@ -74,7 +74,7 @@
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[position][fighting] == 0}{ assist; #VARIABLE {character[position][fighting]} {1} } }
 
 #ALIAS {protect.madd}    {#ACTION {{^%1|^%2|^%3} {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.add}    {#ACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.add}    {#ACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck; targetType charmy %1}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
 #ALIAS {protect.remove} {#UNACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{
