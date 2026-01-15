@@ -94,6 +94,15 @@
   #RETURN 1
 }
 
+#FUNCTION {ARCheck}{
+  #IF { $character[cooldown][%1] == 0 }         {#NOP} {#RETURN 0};
+  #IF { $character[ready][%1] == 1 }            {#NOP} {#RETURN 0};
+  #IF { $character[auto][%1] == 1 }             {#NOP} {#RETURN 0};
+  #RETURN 1
+}
+
+
+
 #FUNCTION {doStuff}{
   #VARIABLE {character[ready][%1]}        {%2};
   #VARIABLE {character[cooldown][%1]}     {%3};

@@ -2,6 +2,7 @@
 @varInit{assail}
 @varInit{bandage}
 @varInit{battle}
+@varInit{breach}
 @varInit{charge}
 @varInit{wardance}
 @varInit{wilddance}
@@ -11,60 +12,56 @@
 @varInit{recuperate}
 @varInit{sharpen}
 
-#ALIAS {autoAssail} 	  { @autoCheck{assail;1;1;16;4} }
-#ALIAS {autoBandage}	  { @autoCheck{bandage;0;1;4;0} }
-#ALIAS {autoBattle} 	  { @autoCheck{battle;1;0;60;4} }
-#ALIAS {autoCharge} 	  { @autoCheck{charge;1;0;16;4} }
-#ALIAS {autoDancer} 	  { @autoCheck{%1;1;1;4;4} }
-#ALIAS {autoGore}   	  { @autoCheck{gore;1;0;6;6} }
-#ALIAS {autoMend}	      { @autoCheck{mend;0;0;4;4} }
-#ALIAS {autoRecuperate}	{ @autoCheck{recuperate;0;1;110;4} }
-#ALIAS {autoSharpen}	  { @autoCheck{sharpen;0;0;4;4} }
-
 targetType mend bread
 targetType bandage me
 targetType sharpen sword
 
-#ACTION {With a crazed scream, you jump into the fray}  { ready assail 1 } 
-#ACTION {You can battle cry again.}                     { ready battle 1 }
-#ACTION {You charge at}					{ ready charge 1 }
-#ACTION {You barrel into}				{ ready charge 1 }
-#ACTION {The insanity builds but quickly subsides} 	{ autoDancer wilddance }
-#ACTION {The love builds but quickly subsides}		{ autoDancer healdance }
-#ACTION {The rage builds but quickly subsides}		{ autoDancer wardance }
-#ACTION {A spray of blood is your reward for goring}    { ready gore 0 }
-#ACTION {Your over-ambitious gore misses}               { ready gore 0 }
-#ACTION {Your gore connects with}                       { ready gore 0 }
+#ACTION {^With a crazed scream, you jump into the fray} { ready assail 1 } 
+#ACTION {^You can battle cry again.}                    { ready battle 1 }
+#ACTION {^You charge at}					                      { ready charge 1 }
+#ACTION {^You barrel into}				                      { ready charge 1 }
+#ACTION {^The insanity builds but quickly subsides} 	  { #IF { @ARCheck{wilddance} } { @doStuff{wilddance;1;4;4}; wilddance } }
+#ACTION {^The love builds but quickly subsides}		      { #IF { @ARCheck{healdance} } { @doStuff{healdance;1;4;4}; healdance } }
+#ACTION {^The rage builds but quickly subsides}		      { #IF { @ARCheck{wardance} }  { @doStuff{wardance;1;4;4}; wardance } }
+#ACTION {^A spray of blood is your reward for goring}   { ready gore 0 }
+#ACTION {^Your over-ambitious gore misses}              { ready gore 0 }
+#ACTION {^Your gore connects with}                      { ready gore 0 }
 #ACTION {^Gore! GOre! GORE!}                            { ready gore 1 }
-#ACTION {You are ready to mend}				{ ready mend 1 }
-#ACTION {You sit down and rest}     { targetType bandage me; autoBandage; autoRecuperate}
-#ACTION {You are ready to sharpen}        {ready sharpen 1}
-#ACTION {already has a good edge to it.}  {doStuff sharpen 1 180 0}
+#ACTION {^You are ready to mend}				                { ready mend 1 }
+#ACTION {^You sit down and rest}                        { targetType bandage me; autoBandage; autoRecuperate}
+#ACTION {^You are ready to sharpen}                     { ready sharpen 1 }
+#ACTION {already has a good edge to it.}                { @doStuff{sharpen;1;180;0} }
 
 
 #ALIAS {sb}     {sip $RipRoaring}
 #VARIABLE {RipRoaring} {firebreather}
 #VARIABLE {character[auto][RipRoaring]} {1}
-#ACTION {It tastes like firebreather.}  {#IF {$character[auto][RipRoaring] == 1}  {sb}}
+#ACTION {It tastes like {firebreather|whiskey}.}  { #IF { $character[auto][RipRoaring] }  {sb}}
 #TICKER {RipRoaring} {sb} {65}
 
 
 #ALIAS {cc}	{carve corpse}
 #ALIAS {cp}	{#LOOP 1 %1 cnt {carve $cnt.corpse}}
 
-/*actual cooldown time for assail is 12 seconds*/ 
 #TICKER {autoChecker} { @AIAC{} } {1}
 
 #FUNCTION {AIAC} {
   @autoRescueCheck{};
   @autoTankCheck{};
-  @autoCheck{battle;1;0;60;4}; 
-  @autoCheck{assail;1;1;16;4}; 
-  @autoCheck{gore;1;0;6;6}; 
-  @autoCheck{charge;1;0;16;4}; 
-  @autoCheck{mend;0;0;4;4}; 
-  @autoCheck{recuperate;0;1;110;4}; 
-  @autoCheck{sharpen;0;0;4;4}; 
+  #IF { $character[cooldown][main] == 0 } {
+    #IF { $character[position][fighting] == 1 } { 
+      #IF { @ARCheck{gore} }    {gore; @doStuff{gore;0;6;4};#BREAK };
+      #IF { @ARCheck{breach} }  {breach; @doStuff{breach;0;60;4};#BREAK };
+      #IF { @ARCheck{battle} }  {battle; @doStuff{battle;0;60;4};#BREAK };
+      #IF { @ARCheck{assail} }  {assail; @doStuff{assail;1;16;4};#BREAK };
+      #IF { @ARCheck{charge} }  {charge; @doStuff{charge;0;16;4};#BREAK }
+    };
+    #IF { $character[position][fighting] == 0} {
+      #IF { @ARCheck{mend} }      {mend $character[target][mend]; @doStuff{mend;0;4;4};#BREAK };
+      #IF { @ARCheck{sharpen} }   {sharpen $character[target][sharpen]; @doStuff{sharpen;0;4;4};#BREAK };
+      #IF { @ARCheck{recuperate} && $character[position][resting] } {recuperate; @doStuff{recuperate;1;110;4};#BREAK }
+    }
+  };
   @cooldownGo{};
   #RETURN {#NOP}
 }

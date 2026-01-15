@@ -14,7 +14,7 @@ targetType rescue name
 }
 
 #FUNCTION {autoTankCheck}   {
-  #IF { @hpCheck{>;33} && @SMCheck{rescue;1} && @checks{tank;1} && "$character[name]" != "$character[isTanking]" } { @rescueStuff{$character[isTanking]} };
+  #IF { @hpCheck{>;33} && @SMCheck{rescue;1} && @ARCheck{tank;1} && "$character[name]" != "$character[isTanking]" } { @rescueStuff{$character[isTanking]} };
   #RETURN {#NOP}
 }
 

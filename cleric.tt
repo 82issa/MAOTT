@@ -50,3 +50,4 @@
 
 #ACTION {^You stop meditating and stand up.}                                        {@position{sitting;0}; @position{resting;0}; @position{standing;1};ready meditate 1}
 #ACTION {^You feel ready to call upon the strength of the Gods.}                    {ready divinity 1}
+#ACTION {^The strength of the Gods leaves you.}                                     {ready divinity 1}
