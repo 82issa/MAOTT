@@ -5,7 +5,7 @@
         #SHOWME \e]R Colors reset to default.
     }
 
-#ALIAS {color_palette}
+#ALIAS {mcp}
     {
         #FOREACH {a;b;c;d;e;f} {cnt1}
             {

@@ -6,7 +6,7 @@
 
 targetType rescue name
 
-#ALIAS {protect.squishy}  {#ACTION {{smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} {@rescueTarget{%1}};#SHOWME <fac>added %1}
+#ALIAS {protect.squishy}  {#ACTION {{crushes|bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates} %1} {@rescueTarget{%1}};#SHOWME <fac>added %1}
 
 #FUNCTION {autoRescueCheck} {
   #IF { @hpCheck{>;33} && @SMCheck{rescue;1} && $character[needsTo][rescue] == 1 } { @rescueStuff{$character[target][rescue]} };

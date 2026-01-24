@@ -7,6 +7,9 @@
 #ALIAS {rarea}  {#VARIABLE actroomarea %0}
 
 #ALIAS {setsign} {#map set roomsymbol ⛯}
+#ALIAS {settp} {#map set roomsymbol 🜂}
+#ALIAS {sethouse} {#map set roomsymbol ⌂}
+#AlIAS {setmountain} {⛰ 🏔𐇲}
 
 
 #ALIAS {map_save} { #SHOWME "Map saved." ;#MAP write {$workingdirectory/map/arctic.map}}

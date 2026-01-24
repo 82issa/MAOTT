@@ -5,6 +5,7 @@
 @varInit{scribe}
 @varInit{brew}
 @varInit{turn}
+@varInit{heal}
 
 #ALIAS {cali} {cast 'cause light' %1}
 #ALIAS {bless}{cast 'bless' %1}
@@ -20,22 +21,29 @@
 #TICKER {autoChecker} { @AIAC{} } {1}
 
 #FUNCTION {AIAC} {
-  #IF {@posCheck{standing;1}} {
-        @autoCheck{divinity;0;0;4;4};
-        ready meditate 1;
-        };
-  #IF {@posCheck{resting;1}} {@autoCheck{meditate;0;0;4;4}};
+  #IF { $character[cooldown][main] == 0 } {
+    #IF {@posCheck{standing;1}} {
+      #IF { @ARCheck{heal} && $Axilus[HP] <= 230 } {cast 'heal' Axilus; @doStuff{heal;1;4;4}; #BREAK} {#NOP};
+          @autoCheck{divinity;0;0;4;4};
+          ready meditate 1
+          };
+    #IF {@posCheck{resting;1}} {
+      #IF { @ARCheck{heal} && $Axilus[HP] <= 230 } {stand};
+      @autoCheck{meditate;0;0;4;4}
+    }
+  }
   @cooldownGo{};
+  #READ Axilus.tmp; 
   #RETURN {#NOP}
 }
 
 #ALIAS {trainBrew} {#FOREACH { 
-  {cure critical} {cure serious} {remove curse} {cure blindness}
+  {heal} {cure critical} {cure serious} {remove curse} {cure blindness}
   {blindness} {restore strength} {know alignment} {cure light} {bless}
 } {targetSpell} {brew '$targetSpell'}}
 
 #ALIAS {trainScribe} {#FOREACH { 
-  {cure critical} {hold person} {flamestrike} {cure serious} {cause serious}
+  {heal} {cure critical} {hold person} {flamestrike} {cure serious} {cause serious}
   {remove curse} {light} {curse} {cure blindness} {blindness} {spiritual hammer}
   {restore strength} {know alignment} {cure light} {create water} {create food}
   {cause light} {bless}

@@ -1,0 +1,176 @@
+#ALIAS {initchat}
+{
+     #chat init 4051;
+     #variable banlist  {};
+     #variable password {none};
+     #variable wholist {};
+     #variable newlist {}
+}
+
+#ACTION {^<CHAT> Connected to %1@%2:%3}
+{
+     #chat emote %1 bleeps: <178>Welcome to (<168>T<178>)he k(<168>I<178>)cki(<168>N<178>) (<168>T<178>)ickin Ch(<168>I<178>)t Chat Thi(<168>N<178>)gie;
+     #if {$banlist[%2]}
+     {
+          #chat emote %2 bleeps: <178>*LOLOL* You were banned sucker! CIAO!!;
+          #chat zap %2
+     };
+     #else
+     {
+          #chat private %1;
+          #if {"$password" == "none"}
+          {
+               broadcast %1 has connected;
+               #variable wholist[%1] {1};
+               #chat emote %1 bleeps: <178>Message me 'help' for a list of commands.
+          };
+          #else
+          {
+               #chat emote %1 bleeps: <178>You must tell me the magic word. Or I will boot your ass!;
+               #variable newlist[%1] {1};
+               #delay 20 autoboot %1
+          }
+     }
+}
+
+#ACTION {^<CHAT> Closing connection to %1@%2}
+{
+     #if {$wholist[%1]}
+     {
+          broadcast %1 has disconnected;
+          #unvariable wholist[%1]
+     };
+     #if {$newlist[%1]}
+     {
+          #unvariable newlist[%1]
+     }
+}
+
+#ACTION {^<CHAT> Your connection with %1 is now private.}
+{
+     #nop
+}
+{1}
+
+#ACTION {^<CHAT> %1 is now %2.$}
+{
+     #if {$wholist[%1]}
+     {
+          broadcast %1 steps into a telephone booth and steps out as %2!;
+          #unvariable wholist[%1];
+          #variable wholist[%2] 1
+     };
+     #if {$newlist[%1]}
+     {
+          #variable newlist[%2] 1;
+          #unvariable newlist[%1]
+     }
+}
+
+#ACTION {^<CHAT> %1 chats to you, 'about'}
+{
+     #chat emote %1 bleeps:<178> I am the retarded little brother you never wanted.
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, 'help'}
+{
+     #chat emote %1 bleeps:<128>   about <178>- <138>everything about thingie.;
+     #chat emote %1 bleeps:<128>    help <178>- <138>gives this totally sweet message.;
+     #chat emote %1 bleeps:<128>  public <178>- <138>makes your connection public.;
+     #chat emote %1 bleeps:<128> private <178>- <138>makes your connection private.;
+     #chat emote %1 bleeps:<128>    tell <178>- <138>send a private message to someone;
+     #chat emote %1 bleeps:<128>     who <178>- <138>gives a list of who is online.;
+     #chat emote %1 bleeps:<128>         <178>- <138>everything else is broadcasted.
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, 'private'}
+{
+     #chat emote %1 waves its yellow wand and chants 'You fade fom subsiftence!!';
+     #chat private %1
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, 'public'}
+{
+     #chat emote %1 puts on his purple hat and chants 'You feel felly fisable!!';
+     #chat public %1
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, 'tell %2 %3'$}
+{
+     #if {$wholist[%1]}
+     {
+          #chat emote %2 <178>:<128>%1 bleeps to you<178>: <138>%3
+     }
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, 'who'}
+{
+     #if {$wholist[%1]}
+     {
+          #variable tmp {};
+          #foreach {$wholist[]} {name}
+          {
+               #if {"$tmp" == ""}
+               {
+                    #variable tmp bleeps: <118>I am connected to: <178>$name
+               };
+               #else
+               {
+                    #variable tmp $tmp<118>, <178>$name
+               }
+          };
+          #chat emote %1 $tmp
+     }
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, '$password'}
+{
+     #if {$newlist[%1]}
+     {
+          #chat emote %1 bleeps: <178>wowie you remembered the secret word!;
+          broadcast %1 has connected;
+          #unvariable newlist[%1];
+          #variable wholist[%1] {1}
+     };
+     #else
+     {
+          #chat emote %1 bleeps: <178>lolol you already gave the password silly loller
+     }
+}
+{4}
+
+#ACTION {^<CHAT> %1 chats to you, '%2'}
+{
+     #if {$wholist[%1]}
+     {
+          #foreach {$wholist[]} {name}
+          {
+               #chat emote $name <178>:<128>%1 bleeps<178>: <138>%2<128>
+          }
+     }
+}
+
+#ALIAS {broadcast}
+{
+     #foreach {$wholist[]} {name}
+     {
+          #chat emote $name bleeps: <138>%0<178>
+     }
+}
+
+#ALIAS {autoboot}
+{
+     #if {$newlist[%0]}
+     {
+          #chat emote %0 bleeps: <178>omglol you did not know the magic word! okthxbye;
+          #chat zap %0;
+          #unvariable newlist[%0]
+     }
+}
+

@@ -19,43 +19,24 @@
         #UNACTION {You follow %1 down}  {}
     }
 
-#ALIAS {mmn}{#MAP move n}
-#ALIAS {mms}{#MAP move s}
-#ALIAS {mme}{#MAP move e}
-#ALIAS {mmw}{#MAP move w}
-#ALIAS {mmu}{#MAP move u}
-#ALIAS {mmd}{#MAP move d}
+#ALIAS {mm} {#MAP move %1}
+#ALIAS {mu} {#MAP undo}
+#ALIAS {mf} {#MAP flag nofollow}
+#ALIAS {mg} {#MAP goto %1}
+#ALIAS {mn} {#MAP set roomname %1}
+#AlIAS {mh} {#MAP foomflag hide %1}
+#ALIAS {meh}{#MAP exitflag %1 hide}
+#ALIAS {mi} {#MAP info}
+#ALIAS {mr} {#MAP run {%1} {1.5};#VARIABLE {lastDestination} {%1} }
+#ALIAS {mx} {rest; #MAP flag nofollow;#showme trip to $lastDestinatoin canceled}
 
 #VARIABLE {mapstatic} {0}
 
-#ALIAS {map_static_off} {#MAP flag static off;#SHOWME #MAP flag static off;#VARIABLE {mapstatic}{0}}
-#ALIAS {map_static_on}  {#MAP flag static on ;#SHOWME #MAP flag static on ;#VARIABLE {mapstatic}{1}}
+#ALIAS {msoff} {#MAP flag static off;#SHOWME #MAP flag static off;#VARIABLE {mapstatic}{0}}
+#ALIAS {mson}  {#MAP flag static on ;#SHOWME #MAP flag static on ;#VARIABLE {mapstatic}{1}}
 
 #ACTION {Alas, you cannot go that way...} { #IF { $mapstatic == 0 } {#MAP undo} }
 #ACTION {The door seems to be closed.}    { #IF { $mapstatic == 0 } {#MAP undo} }
 #ACTION {The gates seems to be closed.}   { #IF { $mapstatic == 0 } {#MAP undo} }
 #ACTION {The cell seems to be closed.}    { #IF { $mapstatic == 0 } {#MAP undo} }
-
-#NOP Gags for gagging directional input and the undo for it.
-
-#ALIAS {gdi} 
-    {
-        #ALIAS {n} {#nop};
-        #ALIAS {e} {#nop};
-        #ALIAS {s} {#nop};
-        #ALIAS {w} {#nop};
-        #ALIAS {u} {#nop};
-        #ALIAS {d} {#nop}
-    }
-
-#ALIAS {udi} 
-    {
-        #UNALIAS {n};
-        #UNALIAS {e};
-        #UNALIAS {s};
-        #UNALIAS {w};
-        #UNALIAS {u};
-        #UNALIAS {d}
-    }
-
 

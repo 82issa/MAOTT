@@ -1,0 +1,21 @@
+#PORT {INIT} {BackBone} {12345}
+#CLASS {BackBone} {OPEN}
+#CHAT {INIT} {4051}
+#CHAT {NAME} {BackBone}
+
+#FUNCTION {writeStat} {
+  #CLASS {character} {OPEN};
+  #VARIABLE {%1} {@%1{$character}};
+  #CLASS {character} {CLOSE};
+  #IF { "$%1" == "@%1{$character}" } {#NOP}  {#CLASS {character} {write} {%1.tmp}};
+  #RETURN {#NOP}
+}
+
+#FUNCTION {readStat} {
+  #READ {%1.tmp}
+}
+
+#ACTION {<CHAT> %1 chats to you, '%2 %3 %4 %5 %6'} {#showme %1 has %2 %3 %4 %5 %6}
+
+#TICKER {run} {@writeStat{Axilus}} {1}
+#CLASS {BackBone} {CLOSE}

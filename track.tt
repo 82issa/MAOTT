@@ -6,10 +6,11 @@
 #ALIAS {autoTrackOff}	{#VARIABLE {character[auto][track]} {0}}
 #ALIAS {autoTrackOn} 	{#VARIABLE {character[auto][track]} {1}}
 
+#ALIAS {tt} {#VARIABLE {count}{0};#VARIABLE {max}{%1};#VARIABLE {ttarget} {%2};#showme Track Train %1.%2;autoTrackOn;trackNext}
 #ALIAS {trainTrack} {#VARIABLE {count}{0};#VARIABLE {max}{%1};#VARIABLE {ttarget} {%2};#showme Track Train %1.%2;autoTrackOn;trackNext}
 
 #ALIAS {trackNext} {#IF {$count < $max} {#MATH {count} {$count + 1};#SHOWME $count.$ttarget;track $count.$ttarget}}
 
 #ACTION {You can't seem to find any tracks.}	{#IF {$character[auto][track] != 0} {trackNext}}
 #ACTION {Your victim's tracks lead %1.}		{#IF {$character[auto][track] == 1 } {autoTrackOff;#SHOWME <fac>landed track}}
-
+#HIGHLIGHT {Your victim's tracks lead %1.} {<fac>}

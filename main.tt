@@ -1,3 +1,4 @@
+#CLASS {StatRipper} {OPEN}
 #ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] [**%20:%21**] Mem:%22 T:%16 Exits:%17>}  { @processPrompt{%22;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19}; @processOpponent{%20;%21} }
 #ACTION {^%11H %12V %13X %14% %15C [%18:%19] [%20:%21] Mem:%22 T:%16 Exits:%17>}          { @processPrompt{%22;1;%11;%12;%13;%14;%15;%16;%17}; @processTank{%18;%19}; @processOpponent{%20;%21} }
 #ACTION {^%11H %12V %13X %14% %15C [**%18:%19**] Mem:%22 T:%16 Exits:%17>}                { @processPrompt{%22;0;%11;%12;%13;%14;%15;%16;%17}; @processWatch{%18;%19} }
@@ -11,6 +12,7 @@
 #ACTION {^%11H %12V %13X %14% %15C T:%16 Exits:%17>}                              { @processPrompt{0;0;%11;%12;%13;%14;%15;%16;%17} }
 
 #FUNCTION {processPrompt} {
+  #CLASS {character} {OPEN};
   #VARIABLE {character[mem]}                {%1};
   #VARIABLE {character[position][fighting]} {%2};
   #VARIABLE {character[HP]}                 {%3};
@@ -20,49 +22,67 @@
   #VARIABLE {character[coins]}              {%7};
   #VARIABLE {character[tick]}               {%8};
   #VARIABLE {character[exits]}              {%9};
+  #CLASS {character} {CLOSE};
   #RETURN {#NOP}
 }
 
 #FUNCTION {processTank}{
+  #CLASS {character} {OPEN};
   #VARIABLE {character[isTanking]}      {%1};
   #VARIABLE {character[tankCondition]}  {%2};
+  #CLASS {character} {CLOSE};
   #RETURN {#NOP}
 }
 
 #FUNCTION {processWatch}{
+  #CLASS {character} {OPEN};
   #VARIABLE {character[isWatching]}     {%1};
   #VARIABLE {character[watchCondition]} {%2};
+  #CLASS {character} {CLOSE};
   #RETURN {#NOP}
 }
 
 #FUNCTION {processOpponent}{
+  #CLASS {character} {OPEN};
   #VARIABLE {character[target]}           {%1};
   #VARIABLE {character[targetCondition]}  {%2};
+  #CLASS {character} {CLOSE};
   #RETURN {#NOP}
 }
 
 #ACTION {^You are %1 the %2 %3, a level %4 %5.} {
-    #VARIABLE {character[name]} {%1};
-    #VARIABLE {character[sex]} {%2};
-    #VARIABLE {character[race]} {%3};
-    #VARIABLE {character[level]} {%4};
-    #VARIABLE {character[class]} {%5}
+  #CLASS {character} {OPEN};
+  #VARIABLE {character[name]} {%1};
+  #VARIABLE {character[sex]} {%2};
+  #VARIABLE {character[race]} {%3};
+  #VARIABLE {character[level]} {%4};
+  #VARIABLE {character[class]} {%5};
+  #CLASS {character} {CLOSE}
 }
 
 #ACTION {^You are rank %1.} {
-    #VARIABLE {character[rank]} {%1}
+  #CLASS {character} {OPEN};
+  #VARIABLE {character[rank]} {%1};
+  #CLASS {character} {CLOSE}
 }
 
 #ACTION {^You are %1 years old.} {
-    #VARIABLE {character[age]} {%1}
+  #CLASS {character} {OPEN};
+  #VARIABLE {character[age]} {%1};
+  #CLASS {character} {CLOSE}
 }
 
 #ACTION {^You have %1(%2) hit and %3(%4) movement points.} {
-    #VARIABLE {character[hp]} {%1};
-    #VARIABLE {character[hp_max]} {%2};
-    #VARIABLE {character[moves]} {%3};
-    #VARIABLE {character[moves_max]} {%4}
+  #CLASS {character} {OPEN};
+  #VARIABLE {character[hp]} {%1};
+  #VARIABLE {character[hp_max]} {%2};
+  #VARIABLE {character[moves]} {%3};
+  #VARIABLE {character[moves_max]} {%4};
+  #CLASS {character} {CLOSE}
 }
+
+#CLASS {StatRipper} {CLOSE}
+
 
 #FUNCTION {percentHP} {#MATH {result} {$character[hp_max] * .%1} }
 #FUNCTION {hpCheck}{
@@ -73,9 +93,9 @@
 
 #ALIAS {autoAssistFightCheck} { #IF {$character[auto][assist] == 1 && $character[position][fighting] == 0}{ assist; #VARIABLE {character[position][fighting]} {1} } }
 
-#ALIAS {protect.madd}    {#ACTION {{^%1|^%2|^%3} {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.add}    {#ACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck; targetType charmy %1}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
-#ALIAS {protect.remove} {#UNACTION {^%1 {bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
+#ALIAS {protect.madd}    {#ACTION {{^%1|^%2|^%3} {crushes|bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.add}    {#ACTION {^%1 {crushes|bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}} { autoAssistFightCheck; targetType charmy %1}; #VARIABLE {character[auto][assist]} {1};#SHOWME <fac>added %1 }
+#ALIAS {protect.remove} {#UNACTION {^%1 {crushes|bludgeons|smites|claws|stabs|cleaves|pierces|slashes|misses|hits|bruises|barely|massacres|annihilates|obliterates}};#SHOWME <fac>removed %1 }
 
 #FUNCTION {checks}{
   #IF { $character[cooldown][main] == 0 }       {#NOP} {#RETURN 0};
@@ -128,10 +148,12 @@
 }
 
 #FUNCTION {varInit}{
+  #CLASS {character} {open};
   #VARIABLE {character[auto][%1]} {1};
   #VARIABLE {character[ready][%1]} {1};
   #VARIABLE {character[cooldown][%1]} {9};
   #VARIABLE {character[cooldown][main]} {9};
+  #CLASS {character} {CLOSE};
   #RETURN {#NOP}
 }
 
@@ -144,6 +166,7 @@
 #00000000000000000000000000000000
 #0 Food and drink related stuff 0
 #00000000000000000000000000000000
+#CLASS {Food And Drink} {OPEN}
 #VARIABLE {character[auto][eat]} {1}
 #VARIABLE {character[auto][drink]} {1}
 #VARIABLE {food}    {bread}
@@ -164,6 +187,8 @@
 #ACTION {fills a %1 from} {#IF { @checks{fillFollow;0} } {ff; @doStuff{fillFollow;1;8;4}} {#nop}}
 #ACTION {You fill a %1 from} {@doStuff{fillFollow;1;8;4}}
 
+#CLASS {Food And Drink} {CLOSE}
+
 #000000000000000000000000000000 
 #0
 #0 Footwork, Bandage & Position 
@@ -178,7 +203,12 @@
 #ACTION {^Your wounds are already bandaged.}     {ready bandage 0}
 #ACTION {^You throw away your bloody bandages.}  {ready bandage 1}
 
-#FUNCTION {position} {#VARIABLE {character[position][%1]} {%2};#RETURN {#NOP}}
+#FUNCTION {position} {
+  #CLASS {character} {OPEN};
+  #VARIABLE {character[position][%1]} {%2};
+  #CLASS {character} {CLOSE};
+  #RETURN {#NOP}
+}
 #FUNCTION {posCheck} {#IF { $character[position][%1] == %2 } {#RETURN 1} {#RETURN 0}}
 
 #ACTION {^You are sitting.}                        {@position{sitting;1}; @position{resting;0}; @position{standing;0}}

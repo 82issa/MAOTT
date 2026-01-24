@@ -13,7 +13,7 @@
             } 
             {
                 #SHOWME <ead> Alert!!! Map data not matching;
-                #IF {$mapsync == 1 } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
+                #IF { "temp1" == "" } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
             };
             #ELSE { #NOP #SHOWME <afa> Map data matches}
     };
@@ -21,7 +21,7 @@
 #ALIAS {mapsync_commit}
     {
         #MAP SET roomname $actroomname;
-        #MAP SET roomarea $actroomarea;
+        #IF { "$actroomarea" != "Not Set" } {#MAP SET roomarea $actroomarea};
         #MAP SET roomdesc $actroomdesc
     }
 
