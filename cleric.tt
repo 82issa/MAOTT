@@ -33,7 +33,6 @@
     }
   }
   @cooldownGo{};
-  #READ Axilus.tmp; 
   #RETURN {#NOP}
 }
 

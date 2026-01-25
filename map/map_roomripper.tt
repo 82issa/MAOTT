@@ -13,7 +13,7 @@
             } 
             {
                 #SHOWME <ead> Alert!!! Map data not matching;
-                #IF { "temp1" == "" } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
+                #IF { "$temp1" == "" } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
             };
             #ELSE { #NOP #SHOWME <afa> Map data matches}
     };
