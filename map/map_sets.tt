@@ -1,10 +1,75 @@
 #NOP Map set tools
 
-#ALIAS {rname}  {#MAP SET roomname %0;      #SHOWME #MAP SET roomname %0}
-#ALIAS {rcolor} {#MAP SET roomcolor {<%1>}; #SHOWME #MAP SET roomcolor {<%1>}}
-#ALIAS {rnote}  {#MAP SET roomnote {%0};    #SHOWME #MAP SET roomnote {%0}}
+#ALIAS {mu}     {#map undo}
+#ALIAS {mf}     {#map flag nofollow}
+#ALIAS {mm}     {#map move %1}
+#ALIAS {mg}     {#map goto %1}
+#ALIAS {mn}     {#map set roomname %1}
+#ALIAS {mc}     {#map set roomcolor {<%1>}}
+#ALIAS {mi}     {#map info}
+#ALIAS {mr}     {#map run {%1}{1.5}}
+#ALIAS {mrx}    {#path stop}
+#ALIAS {mv}     {#map insert %1 void}
+#ALIAS {mvc}    {#map uninsert %1}
+#ALIAS {mlist}  {#map list %1}
+#ALIAS {md}     {#map delete %1}
+#ALIAS {ml}     {#map link {%1} {%2} {%3}}
+#ALIAS {mir}    {#map insert {%1} {%2}}
+#ALIAS {mdig}   {#map dig %1 %2 %3}
+#ALIAS {msrn}   {#MAP SET roomname %0;      #SHOWME #MAP SET roomname %0}
+#ALIAS {msrc}   {#MAP SET roomcolor {<%1>}; #SHOWME #MAP SET roomcolor \{<%1>\}}
+#ALIAS {msnt}   {#MAP SET roomnote {%0};    #SHOWME #MAP SET roomnote {%0}}
 #ALIAS {mrfh}   {#MAP roomflag hide;        #SHOWME #MAP roomflag hide.}
 #ALIAS {rarea}  {#VARIABLE actroomarea %0}
+
+#ALIAS {meh} {
+  #SWITCH {"%1"}{
+    #CASE {"n"} {#MAP exitflag n hide;#MAP move n;#MAP exitflag s hide;#MAP move s};
+    #CASE {"e"} {#MAP exitflag e hide;#MAP move e;#MAP exitflag w hide;#MAP move w};
+    #CASE {"s"} {#MAP exitflag s hide;#MAP move s;#MAP exitflag n hide;#MAP move n};
+    #CASE {"w"} {#MAP exitflag w hide;#MAP move w;#MAP exitflag e hide;#MAP move e};
+    #CASE {"u"} {#MAP exitflag u hide;#MAP move u;#MAP exitflag d hide;#MAP move d};
+    #CASE {"d"} {#MAP exitflag d hide;#MAP move d;#MAP exitflag u hide;#MAP move u};
+    #DEFAULT {#SHOWME ERROR: no case for {%1} }
+  }
+}
+
+#ALIAS {rms} {
+  #SWITCH { "%1"} {
+    #CASE {"gate"}    {#MAP set roomsymbol <cbb>₶;#MAP set roomcolor <cbb>};
+    #CASE {"portal1"} {#MAP set roomsymbol <acf>ↈ;#MAP set roomcolor <cbb>};
+    #CASE {"portal2"} {#MAP set roomsymbol <acf>O;#MAP set roomcolor <cbb>};
+    #CASE {"gem"}     {#MAP set roomsymbol <acf>⟡;#MAP set roomcolor <cbb>};
+    #CASE {"stop"}    {#MAP set roomsymbol <caa>⊗};
+    #CASE {"death"}   {#MAP set roomsymbol <caa>☠;#MAP roomflag avoid};
+    #CASE {"recup"}   {#MAP set roomsymbol <fca>♨;#MAP set roomcolor <afe>};
+    #CASE {"rank"}    {#MAP set roomsymbol <eaf>☬;#MAP set roomcolor <dad>} 
+  }
+}
+		
+#ALIAS {ts}{
+  #SWITCH {"%1"} {
+    #CASE {"tree"}      {#SHOWME };
+    #CASE {"city"}      {#SHOWME };
+    #CASE {"village"}   {#SHOWME };
+    #CASE {"plains"}    {#SHOWME };
+    #CASE {"water"}     {#SHOWME ≋ ≈ ∽ ∼ ∻ ⩪ ⩫ ♒};
+    #CASE {"mountains"} {#SHOWME };
+    #CASE {"desert"}    {#SHOWME }
+  }
+}
+
+#ALIAS {rlv} {
+  #MAP insert e;
+  #MAP move e;
+  #MAP roomflag void;
+  #MAP set roomsymbol %1
+}
+#ALIAS {mgg} {
+  #MAP get roomexits mggtmp;
+  #IF {$mggtmp[%1} {#MAP goto $mggtmp[%1]};
+  #UNVARIABLE mggtmp
+}
 
 #ALIAS {setsign} {#map set roomsymbol ⛯}
 #ALIAS {settp} {#map set roomsymbol 🜂}

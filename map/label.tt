@@ -1,0 +1,18 @@
+#ALIAS {mzl} {
+  #MAP get roomvnum startroomtemp;
+  #IF { "%0" != ""} {
+    #FORMAT   {labels}      {%%6w}  {%0};
+    #FORMAT   {labels[-1]}  {%-6s} {$labels[-1]};
+    #FOREACH  {$labels[%*]} {cnt} {
+      #MAP insert e;
+      #MAP move e;
+      #MAP roomflag void;
+      #MAP set roomsymbol $cnt
+    };
+    #MAP roomflag static;
+    #MAP goto $startroomtemp;
+    #UNVARIABLE {labels} {startroomtemp}
+  }
+}
+
+

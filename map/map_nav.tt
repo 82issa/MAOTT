@@ -19,17 +19,6 @@
         #UNACTION {You follow %1 down}  {}
     }
 
-#ALIAS {mm} {#MAP move %1}
-#ALIAS {mu} {#MAP undo}
-#ALIAS {mf} {#MAP flag nofollow}
-#ALIAS {mg} {#MAP goto %1}
-#ALIAS {mn} {#MAP set roomname %1}
-#AlIAS {mh} {#MAP foomflag hide %1}
-#ALIAS {meh}{#MAP exitflag %1 hide}
-#ALIAS {mi} {#MAP info}
-#ALIAS {mr} {#MAP run {%1} {1.5};#VARIABLE {lastDestination} {%1} }
-#ALIAS {mx} {rest; #MAP flag nofollow;#showme trip to $lastDestinatoin canceled}
-
 #VARIABLE {mapstatic} {0}
 
 #ALIAS {msoff} {#MAP flag static off;#SHOWME #MAP flag static off;#VARIABLE {mapstatic}{0}}

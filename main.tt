@@ -272,5 +272,6 @@
         #READ {$workingdirectory/map/map_nav.tt};
         #READ {$workingdirectory/map/map_roomripper.tt};
         #READ {$workingdirectory/map/map_sets.tt};
-        #READ {$workingdirectory/map/map_updownlink.tt}
+        #READ {$workingdirectory/map/map_updownlink.tt};
+        #READ {$workingdirectory/map/label.tt}
 }

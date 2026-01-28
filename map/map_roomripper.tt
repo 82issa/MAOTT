@@ -13,6 +13,7 @@
             } 
             {
                 #SHOWME <ead> Alert!!! Map data not matching;
+                #MAP list {$actroomname} {} {$actroomdesc};
                 #IF { "$temp1" == "" } {mapsync_commit;#SHOWME <ead> mapsync_committed don't forget to save}
             };
             #ELSE { #NOP #SHOWME <afa> Map data matches}
