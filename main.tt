@@ -211,13 +211,14 @@
 }
 #FUNCTION {posCheck} {#IF { $character[position][%1] == %2 } {#RETURN 1} {#RETURN 0}}
 
-#ACTION {^You are sitting.}                        {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
-#ACTION {^You sit down.}                           {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
-#ACTION {^You are resting.}                        {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
-#ACTION {^You rest your tired bones.}              {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
-#ACTION {^You sit down and rest your tired bones.} {@position{sitting;1}; @position{resting;1}; @position{standing;0}; targetType bandage me; @autoCheck{bandage;0;1;4;0}} {3}
-#ACTION {^You are standing.}                       {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
-#ACTION {^You stand up.}                           {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+#ACTION {^You are sitting.}                           {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {^You sit down.}                              {@position{sitting;1}; @position{resting;0}; @position{standing;0}}
+#ACTION {^You are resting.}                           {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {^You rest your tired bones.}                 {@position{sitting;1}; @position{resting;1}; @position{standing;0}}
+#ACTION {^You rest your tired bones but stay aloft.}  {@position{sitting;1}; @position{resting;1}; @position{standing;0}; targetType bandage me; @autoCheck{bandage;0;1;4;0}} {3}
+#ACTION {^You sit down and rest your tired bones.}    {@position{sitting;1}; @position{resting;1}; @position{standing;0}; targetType bandage me; @autoCheck{bandage;0;1;4;0}} {3}
+#ACTION {^You are standing.}                          {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
+#ACTION {^You stand up.}                              {@position{sitting;0}; @position{resting;0}; @position{standing;1}}
 
 #ACTION {^You are following}                       {@position{following;1}}
 #ACTION {^You now follow %1.}                      {@position{following;1}}

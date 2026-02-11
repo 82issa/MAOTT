@@ -27,6 +27,8 @@ targetType sharpen sword
 #ACTION {^Your over-ambitious gore misses}              { ready gore 0 }
 #ACTION {^Your gore connects with}                      { ready gore 0 }
 #ACTION {^Gore! GOre! GORE!}                            { ready gore 1 }
+#ACTION {^Your rush into the breach reaches its end.}   { ready breach 1}
+#ACTION {^You can't find the courage to dive into the breach.}  { ready breach 1}
 #ACTION {^You are ready to mend}				                { ready mend 1 }
 #ACTION {^You sit down and rest}                        { targetType bandage me; autoBandage; autoRecuperate}
 #ACTION {^You are ready to sharpen}                     { ready sharpen 1 }

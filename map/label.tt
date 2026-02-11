@@ -1,17 +1,28 @@
 #ALIAS {mzl} {
   #MAP get roomvnum startroomtemp;
-  #IF { "%0" != ""} {
-    #FORMAT   {labels}      {%%6w}  {%0};
-    #FORMAT   {labels[-1]}  {%-6s} {$labels[-1]};
+  #VARIABLE {INSERTFLAG} {0};
+  #IF { "%2" != ""} {
+    #FORMAT   {labels}      {%%6w}  {%2};
+    #SWITCH {"%1"} {
+      #CASE {"opath"} { 
+        #FORMAT   {labels[-1]}  {%.6s} {$labels[-1]<278>------} 
+        };
+      #CASE {"ipath"} { 
+        #FORMAT   {labels[-1]}  {%.6s} {$labels[-1]<278>------};
+        #VARIABLE {INSERTFLAG} {1}
+        };
+      #CASE {"flag"} { 
+        #FORMAT   {labels[-1]}  {%-6s} {$labels[-1]} }
+      };
     #FOREACH  {$labels[%*]} {cnt} {
-      #MAP insert e;
+      #IF {$INSERTFLAG == 1} {#MAP insert e};
       #MAP move e;
-      #MAP roomflag void;
+      #IF {$INSERTFLAG == 0} {#MAP roomflag void};
       #MAP set roomsymbol $cnt
     };
     #MAP roomflag static;
     #MAP goto $startroomtemp;
-    #UNVARIABLE {labels} {startroomtemp}
+    #UNVARIABLE {labels} {startroomtemp} {INSERTFLAG} {cnt}
   }
 }
 
