@@ -49,13 +49,14 @@
 		
 #ALIAS {ts}{
   #SWITCH {"%1"} {
-    #CASE {"tree"}      {#SHOWME };
-    #CASE {"city"}      {#SHOWME };
-    #CASE {"village"}   {#SHOWME };
-    #CASE {"plains"}    {#SHOWME };
-    #CASE {"water"}     {#SHOWME ≋ ≈ ∽ ∼ ∻ ⩪ ⩫ ♒};
-    #CASE {"mountains"} {#SHOWME };
-    #CASE {"desert"}    {#SHOWME }
+    #CASE {"tree"}      {#SHOWME <120>𐇲 };
+    #CASE {"forest"}    {#SHOWME <120# };
+    #CASE {"city"}      {#SHOWME <150>⌂ };
+    #CASE {"village"}   {#SHOWME <150>🜂 };
+    #CASE {"plains"}    {#SHOWME <120> ⺌⺍⺣ };
+    #CASE {"water"}     {#SHOWME <140> ≋ ≈ ∽ ∼ ∻ ⩪ ⩫ ♒};
+    #CASE {"mountains"} {#SHOWME <160>^ };
+    #CASE {"desert"}    {#SHOWME <130>∽ ∼ }
   }
 }
 
@@ -72,7 +73,7 @@
 }
 
 #ALIAS {setsign} {#map set roomsymbol ⛯}
-#ALIAS {settp} {#map set roomsymbol 🜂}
+#ALIAS {settp} {#map set roomsymbol 🜂 }
 #ALIAS {sethouse} {#map set roomsymbol ⌂}
 #AlIAS {setmountain} {⛰ 🏔𐇲}
 

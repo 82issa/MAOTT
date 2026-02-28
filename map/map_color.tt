@@ -21,3 +21,19 @@
             }
     }
 
+#ALIAS {mcp2}
+    {
+        #FOREACH {0;1;2;3;4;5;6;7;8;9} {cnt1}
+            {
+                #FOREACH {0;1;2;3;4;5;6;7;8;9} {cnt2}
+                    {
+                        #VARIABLE result <000>;
+                        #FOREACH {0;1;2;3;4;5;6;7;8;9} {cnt3}
+                            {
+                                #VARIABLE result $result <$cnt1$cnt2$cnt3> <<888>$cnt1$cnt2$cnt3><888>
+                            };
+                        #SHOWME $result
+                    }
+            }
+    }
+
